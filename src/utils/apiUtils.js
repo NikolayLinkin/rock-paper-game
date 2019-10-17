@@ -33,6 +33,8 @@ const onApi = event => {
 };
 
 
+//TODO: не длжно работать в PVE
+
 const endpoint = "http://localhost:3005";
 
 const socket = socketIOClient(endpoint);

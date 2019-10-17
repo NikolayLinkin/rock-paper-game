@@ -1,8 +1,8 @@
 const PAPER = "paper";
 const SCISSORS = "scissors";
-const ROCKS = "rocks";
+const ROCK = "rock";
 
-const rates = [PAPER, SCISSORS, ROCKS];
+const rates = [PAPER, SCISSORS, ROCK];
 const getAiRate = () => rates[Math.floor(Math.random() * 3)];
 
 export const playWithAi = (playerRate) => {
@@ -13,9 +13,9 @@ export const playWithAi = (playerRate) => {
     }
 
     if(
-        (playerRate === PAPER && aiRate === ROCKS) ||
+        (playerRate === PAPER && aiRate === ROCK) ||
         (playerRate === SCISSORS && aiRate === PAPER) ||
-        (playerRate === ROCKS && aiRate === SCISSORS)
+        (playerRate === ROCK && aiRate === SCISSORS)
     ) {
         return {gameResult: 'win', aiRate};
     }
