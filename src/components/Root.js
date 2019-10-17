@@ -1,23 +1,20 @@
 import React, {Component} from "react";
-import WeaponsContainer from "../containers/WeaponsContainer";
+import {Link, Route} from "react-router-dom";
+import PvE from "./PvE";
+import PvPContainer from "../containers/PvPContainer";
 
 class Root extends Component {
-
 
     render() {
 
         return (
             <div className="wrapper">
-                <div className="choose-panel">
-                    <h2 className="title">
-                        Для начала игры, нужно выбрать позицию:
-                    </h2>
-                    <WeaponsContainer/>
-                </div>
+                <Link to="/pve">PVE</Link>
+                <br/>
+                <Link to="pvp">PVP</Link>
 
-                <div className="game__results">
-
-                </div>
+                <Route exact path="/pve" component={PvE}/>
+                <Route exact path="/pvp" component={PvPContainer}/>
             </div>
         );
     }

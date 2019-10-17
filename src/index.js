@@ -6,12 +6,14 @@ import {AppContainer} from "react-hot-loader";
 import createStore from "./store/createStore";
 import "./styles/styles.scss";
 import RootContainer from "./containers/RootContainer";
-
+import {BrowserRouter as Router} from "react-router-dom";
 
 ReactDOM.render(
     <AppContainer>
         <Provider store={createStore()}>
-            <RootContainer/>
+            <Router>
+                <RootContainer/>
+            </Router>
         </Provider>
     </AppContainer>,
     document.getElementById('root')
