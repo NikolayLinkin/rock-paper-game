@@ -2,20 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
-import {AppContainer} from "react-hot-loader";
 import createStore from "./store/createStore";
 import "./styles/styles.scss";
 import RootContainer from "./containers/RootContainer";
 import {BrowserRouter as Router} from "react-router-dom";
 
 ReactDOM.render(
-    <AppContainer>
-        <Provider store={createStore()}>
-            <Router>
-                <RootContainer/>
-            </Router>
-        </Provider>
-    </AppContainer>,
+    <Provider store={createStore()}>
+        <Router>
+            <RootContainer/>
+        </Router>
+    </Provider>,
     document.getElementById('root')
 );
 

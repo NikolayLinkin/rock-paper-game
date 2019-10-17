@@ -10,7 +10,7 @@ class PvP extends Component {
     };
 
     componentDidMount() {
-
+        this.props.fetchRooms();
     }
 
     createRoom = (roomName) => {
@@ -24,12 +24,24 @@ class PvP extends Component {
       createRoom(roomName, userName);
     };
 
+    roomLeave = (roomName) => {
+        roomName = 'my first room';
+
+        this.props.roomLeave(roomName);
+    };
+
     render() {
+        const {roomsList, currentRoom, createRoom} = this.props;
 
         return (
             <div className="wrapper">
                 <span onClick={() => this.createRoom()}>New Room</span>
-                <RoomsList/>
+                <br/>
+                <span onClick={() => this.roomLeave()}>Leave room</span>
+                <RoomsList rooms={roomsList}
+                           joinToRoom={createRoom}
+                           currentRoom={currentRoom}
+                />
 
                 {/*<div className="choose-panel">*/}
                 {/*    <h2 className="title">*/}

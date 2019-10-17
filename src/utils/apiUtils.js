@@ -16,28 +16,29 @@ const emitApi = (event, data) => {
       });
 };
 
+const onApi = event => {
+    return new Promise((resolve, reject) => {
+        if(!socket) {
+            reject('No socket connection');
+        }
+
+        socket.on(event, res => {
+            if(res.error) {
+                reject(res.error);
+            }
+
+            resolve(res);
+        })
+    });
+};
+
 
 const endpoint = "http://localhost:3005";
 
 const socket = socketIOClient(endpoint);
 
-export const joinToRoom = roomName => `JoinToRoom ${roomName}`;
-
 export const createRoom = (room, name='тест_user') => emitApi('createRoom', {room, name});
 
-socket.on('userConnect', data => {
-    console.dir(data);
-})
+export const roomLeave = room => emitApi('roomLeave', {room});
 
-
-socket.on('login', data => {
-    console.log(data);
-});
-
-socket.on('user joined', data => {
-   console.log(data);
-});
-
-socket.on('show rooms list', data => {
-    console.dir(data);
-});
+export const getAllRooms = () => onApi('getAllRooms');

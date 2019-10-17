@@ -3,3 +3,9 @@ export const GAME_FINISH = "GAME_FINISH";
 export const UPDATE_GAME_HISTORY = "UPDATE_GAME_HISTORY";
 export const GAME_SELECTED_WEAPON = "GAME_SELECTED_WEAPON";
 export const GAME_CHANGE_MODE = "GAME_CHANGE_MODE";
+
+export const SET_USER = "SET_USER";
+export const FETCH_ROOMS_LIST = "FETCH_ROOMS_LIST";
+
+export const ROOM_JOIN = "ROOM_JOIN";
+export const ROOM_LEAVE = "ROOM_LEAVE";
