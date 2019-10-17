@@ -6,6 +6,7 @@ const initialState = {
     loading: false,
     actionsHistory: [],
     result: null,
+    aiRate: null,
     selectedWeapon: null,
     history: [],
 };
@@ -21,12 +22,15 @@ const game = (state = initialState, action) => {
         case types.GAME_START: {
             return {
                 ...state,
+                finish: false,
             }
         }
         case types.GAME_FINISH: {
             return {
                 ...state,
-                result: action.result,
+                result: action.gameResult,
+                aiRate: action.aiRate,
+                finish: true,
             }
         }
 

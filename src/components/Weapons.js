@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import classNames from "classnames";
 
+import GameInfo from "./GameInfo";
 
 class Weapons extends Component {
     constructor(props) {
@@ -25,17 +26,21 @@ class Weapons extends Component {
     };
 
     chooseWeapon = (name) => {
-        this.setState(state=> ({selectedWeapon: name}))
+        this.setState(state=> ({selectedWeapon: name}));
+
     };
 
     render() {
-        const {gameResult, gameHistory} = this.props;
+        const {
+            gameResult,
+            gameHistory,
+            gameFinish,
+            aiRate,
+        } = this.props;
+        const {selectedWeapon} = this.state;
 
         return (
             <form onSubmit={this.handleSubmit}>
-                <span className={gameResult}>
-                    {gameResult}
-                </span>
                 <div className="weapons" >
                     <label className="weapons__item">
                         <input className="weapons__item__inp"
@@ -65,7 +70,13 @@ class Weapons extends Component {
                     Играть
                 </button>
 
-                {JSON.stringify(gameHistory)}
+                {/*{JSON.stringify(gameHistory)}*/}
+
+                {gameFinish ?
+                    <GameInfo aiRate={aiRate}
+                              gameResult={gameResult}
+                              playerRate={selectedWeapon}
+                    /> : ""}
             </form>
         )
     }

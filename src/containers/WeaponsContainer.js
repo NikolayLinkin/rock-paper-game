@@ -6,6 +6,8 @@ import Weapons from "../components/Weapons";
 import {
     getGameResult,
     getGameHistory,
+    getAiRate,
+    getGameFinish,
 } from "../selectors/commonSelectors";
 
 import {
@@ -18,6 +20,8 @@ const mapStateToProps = state => {
     return {
         gameResult: getGameResult(state),
         gameHistory: getGameHistory(state),
+        aiRate: getAiRate(state),
+        gameFinish: getGameFinish(state),
     };
 };
 

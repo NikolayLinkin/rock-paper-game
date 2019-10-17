@@ -9,7 +9,7 @@ export const playWithAi = (playerRate) => {
     const aiRate = getAiRate();
 
     if(playerRate === aiRate) {
-        return 'draw';
+        return {gameResult: 'draw', aiRate};
     }
 
     if(
@@ -17,8 +17,8 @@ export const playWithAi = (playerRate) => {
         (playerRate === SCISSORS && aiRate === PAPER) ||
         (playerRate === ROCKS && aiRate === SCISSORS)
     ) {
-        return 'win';
+        return {gameResult: 'win', aiRate};
     }
 
-    return 'lose';
+    return {gameResult: 'lose', aiRate};
 };
