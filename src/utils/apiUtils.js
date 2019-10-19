@@ -1,5 +1,11 @@
 import socketIOClient from "socket.io-client";
 
+/**
+ * emit события
+ * @param event {string}
+ * @param data {object}
+ * @returns {Promise<>}
+ */
 const emitApi = (event, data) => {
       return new Promise((resolve, reject) => {
          if(!socket) {
@@ -16,6 +22,11 @@ const emitApi = (event, data) => {
       });
 };
 
+/**
+ * подписка на событие
+ * @param event {string}
+ * @returns {Promise<>}
+ */
 const onApi = event => {
     return new Promise((resolve, reject) => {
         if(!socket) {
@@ -32,15 +43,34 @@ const onApi = event => {
     });
 };
 
+let socket = null;
 
 //TODO: не длжно работать в PVE
 
+
 const endpoint = "http://localhost:3005";
 
-const socket = socketIOClient(endpoint);
+export const connect = () => {
+    socket = socketIOClient(endpoint);
 
-export const createRoom = (room, name='тест_user') => emitApi('createRoom', {room, name});
+    subscribes(socket);
+};
 
-export const roomLeave = room => emitApi('roomLeave', {room});
+export const subscribes = (socket) => {
+    return {
+        getWinner() {return onApi('winner')}
+    }
 
-export const getAllRooms = () => onApi('getAllRooms');
+};
+
+export const disconnect = () => {socket.disconnect(); socket = null;};
+
+export const userJoin = userName => emitApi('userJoin', {userName});
+
+export const fetchRate = (rate, socketId) => emitApi('findWinner', {rate, socketId});
+
+// export const createRoom = (room, name='тест_user') => emitApi('createRoom', {room, name});
+
+// export const roomLeave = room => emitApi('roomLeave', {room});
+
+// export const getAllRooms = () => onApi('getAllRooms');

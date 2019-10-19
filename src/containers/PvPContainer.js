@@ -4,12 +4,26 @@ import {connect} from "react-redux";
 import PvP from "../components/PvP";
 
 import {
-    createRoom,
-    fetchRooms,
-    roomLeave,
+    connectToServer,
+    leaveFromServer,
+
+    joinInGame,
+    fetchRate,
+    wWinner,
 } from "../actions/PvPActions";
 
-import {getRoomsList, getCurrentRoom} from "../selectors/commonSelectors";
+import {loginUser} from "../actions/SessionActions";
+
+import {
+    getRoomsList,
+    getCurrentRoom,
+    getGameFinish,
+    getEnemyRate,
+    getPlayerRate,
+    getGameResult,
+    getUserName,
+    getGameMessage,
+} from "../selectors/commonSelectors";
 
 const PvPContainer = props => <PvP {...props}/>;
 
@@ -17,11 +31,21 @@ const mapStateToProps = state => {
     return {
         roomsList: getRoomsList(state),
         currentRoom: getCurrentRoom(state),
+        enemyRate: getEnemyRate(state),
+        playerRate: getPlayerRate(state),
+        gameResult: getGameResult(state),
+        gameFinish: getGameFinish(state),
+        userName: getUserName(state),
+        gameMessage: getGameMessage(state),
     }
 };
 
 export default connect(mapStateToProps, {
-    createRoom,
-    fetchRooms,
-    roomLeave,
+    connectToServer,
+    leaveFromServer,
+
+    joinInGame,
+    loginUser,
+    fetchRate,
+    wWinner,
 })(PvPContainer);

@@ -1,22 +1,37 @@
 import React, {Component} from "react";
-import WeaponsContainer from "../containers/WeaponsContainer";
+
+import Weapons from "../components/Weapons";
+import GameResult from "./GameResult";
 
 class PvE extends Component {
     render() {
+        const {
+            startPvEGame,
+            startNewGame,
+            enemyRate,
+            playerRate,
+            gameResult,
+            gameFinish,
+        } = this.props;
 
         return (
-            <div className="wrapper">
-                <div className="choose-panel">
-                    <h2 className="title">
-                        Для начала игры, нужно выбрать позицию:
-                    </h2>
-                    <WeaponsContainer/>
-                </div>
+            <>
+                <h2 className="title">
+                    Для начала игры, нужно выбрать позицию:
+                </h2>
+                <Weapons applyChoose={startPvEGame}
+                         startNewGame={startNewGame}
+                         gameFinish={gameFinish}
+                />
 
-                <div className="game__results">
-
-                </div>
-            </div>
+                {gameFinish ?
+                    <GameResult enemyRate={enemyRate}
+                                playerRate={playerRate}
+                                gameResult={gameResult}
+                    />
+                    : ''
+                }
+            </>
         );
     }
 }

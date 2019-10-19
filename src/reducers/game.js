@@ -3,34 +3,38 @@ import * as types from "../constants/ActionsTypes";
 const initialState = {
     gameMode: null,
     finish: false,
-    loading: false,
-    actionsHistory: [],
     result: null,
-    aiRate: null,
+    enemyRate: null,
     selectedWeapon: null,
-    history: [],
+    loading: false,
+    message: null,
 };
 
 const game = (state = initialState, action) => {
     switch (action.type) {
-        case types.GAME_CHANGE_MODE: {
-            return {
-                ...state,
-                gameMode: action.gameMode,
-            }
-        }
         case types.GAME_START: {
             return {
                 ...state,
                 finish: false,
+                result: null,
+                enemyRate: null,
+                playerRate: null,
             }
         }
         case types.GAME_FINISH: {
             return {
                 ...state,
                 result: action.gameResult,
-                aiRate: action.aiRate,
+                enemyRate: action.enemyRate,
+                playerRate: action.playerRate,
                 finish: true,
+            }
+        }
+
+        case types.GAME_UPDATE_STATUS: {
+            return {
+                ...state,
+                message: action.message,
             }
         }
 

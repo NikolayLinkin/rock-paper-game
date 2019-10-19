@@ -5,26 +5,67 @@ export const userConnect = (userName) => dispatch => {
 
 };
 
-export const createRoom = (roomName, userName) => async dispatch => {
-    if(roomName) {
-        const userId = await api.createRoom(roomName, userName);
+export const connectToServer = () => async dispatch => {
+    await api.connect();
+};
+export const leaveFromServer = () => async dispatch => {
+    await api.disconnect();
+};
 
-        dispatch({type: types.SET_USER, userId});
-        dispatch({type: types.ROOM_JOIN, currentRoom: roomName});
-        dispatch(fetchRooms());
+export const joinInGame = (name) => async dispatch => {
+    // dispatch({type: types.GAME_START});
+
+
+    if (!name) {
+        dispatch({type: types.GAME_UPDATE_STATUS, message: 'Нужно ввести имя'});
+    } else {
+        const {id, error} = await api.userJoin(name);
+
+        dispatch({type: types.SAVE_SOCKET_ID, id});
+        dispatch({type: types.GAME_UPDATE_STATUS, error});
     }
 };
 
-export const roomLeave = (roomName) => async dispatch => {
-    dispatch({type: types.ROOM_LEAVE});
+export const fitchGameResults = () => async dispatch => {
 
-    if(roomName) {
-        await api.roomLeave(roomName);
+};
+
+export const fetchRate = rate => async (dispatch, getState) => {
+    const state = getState();
+    const socketId = state.session.socketId;
+
+    await api.fetchRate(rate, socketId);
+};
+
+export const wWinner = () => async (dispatch, getState) => {
+    const {winnerId, firstUserRate, secondUserRate} = await api.subscribes().getWinner();
+
+    const state = getState();
+    const socketId = state.session.socketId;
+    let gameResult = 'lose';
+
+    if(winnerId === socketId) {
+        gameResult = "win";
     }
+    if(winnerId === 0) {
+        gameResult = 'draw';
+    }
+
+    dispatch({type: types.GAME_FINISH, gameResult, enemyRate: secondUserRate, playerRate: firstUserRate});
 };
 
-export const fetchRooms = () => async dispatch => {
-    const rooms = await api.getAllRooms();
+// export const createRoom = (roomName, userName) => async dispatch => {
+//     if (roomName) {
+//         const userId = await api.createRoom(roomName, userName);
+//
+//         // dispatch({type: types.SET_USER, userId});
+//         dispatch({type: types.ROOM_JOIN, currentRoom: roomName});
+//         dispatch(fetchRooms());
+//     }
+// };
 
-    dispatch({type: types.FETCH_ROOMS_LIST, rooms});
-};
+// export const fetchRooms = () => async dispatch => {
+//     const rooms = await api.getAllRooms();
+//
+//     dispatch({type: types.FETCH_ROOMS_LIST, rooms});
+// };

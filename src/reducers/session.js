@@ -1,17 +1,25 @@
 import * as types from "../constants/ActionsTypes";
 
 const initialState = {
-    userId: null,
+    socketId: null,
     rooms: [],
     currentRoom: null,
+    userName: null,
 };
 
 const session = (state=initialState, action) => {
     switch (action.type) {
-        case types.SET_USER: {
+        case types.SAVE_SOCKET_ID: {
             return {
                 ...state,
-                userId: action.userId,
+                socketId: action.id,
+            }
+        }
+
+        case types.SAVE_USER_NAME: {
+            return {
+                ...state,
+                userName: action.userName,
             }
         }
 

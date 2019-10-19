@@ -1,18 +1,23 @@
 import * as types from "../constants/ActionsTypes";
-import {playWithAi} from "../utils/gameUtils";
+import {playWithAi} from "../utils/PvEUtils";
 
 
-
-export const setSelectedWeapon = (name) => ({
-    type: types.GAME_SELECTED_WEAPON,
-    name,
+const gameFinish = (gameResult, enemyRate, playerRate) => ({
+    type: types.GAME_FINISH,
+    gameResult,
+    enemyRate,
+    playerRate,
 });
 
-export const startGame = (playerRate) => dispatch => {
+export const startPvEGame = (playerRate) => dispatch => {
     const {gameResult, aiRate} = playWithAi(playerRate);
 
-    dispatch({type: types.GAME_FINISH, gameResult, aiRate});
-    dispatch(updateGameHistory(gameResult));
+    dispatch(gameFinish(gameResult, aiRate, playerRate));
+    // dispatch(updateGameHistory(gameResult));
+};
+
+export const startNewGame = () => dispatch => {
+    dispatch({type: types.GAME_START});
 };
 
 const updateGameHistory = (lastGameResult) => ({

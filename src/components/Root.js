@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Link, Route} from "react-router-dom";
-import PvE from "./PvE";
+import PvEContainer from "../containers/PvEContainer";
 import PvPContainer from "../containers/PvPContainer";
 
 class Root extends Component {
@@ -13,7 +13,7 @@ class Root extends Component {
                 <br/>
                 <Link to="pvp">PVP</Link>
 
-                <Route exact path="/pve" component={PvE}/>
+                <Route exact path="/pve" component={PvEContainer}/>
                 <Route exact path="/pvp" component={PvPContainer}/>
             </div>
         );

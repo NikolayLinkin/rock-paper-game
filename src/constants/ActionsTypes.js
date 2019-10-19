@@ -1,10 +1,13 @@
 export const GAME_START = "GAME_START";
+export const GAME_START_PVP = "GAME_START_PVP";
+export const GAME_UPDATE_STATUS = "GAME_UPDATE_STATUS";
 export const GAME_FINISH = "GAME_FINISH";
 export const UPDATE_GAME_HISTORY = "UPDATE_GAME_HISTORY";
 export const GAME_SELECTED_WEAPON = "GAME_SELECTED_WEAPON";
 export const GAME_CHANGE_MODE = "GAME_CHANGE_MODE";
 
-export const SET_USER = "SET_USER";
+export const SAVE_SOCKET_ID = "SAVE_USER_ID";
+export const SAVE_USER_NAME = "SAVE_USER_NAME";
 export const FETCH_ROOMS_LIST = "FETCH_ROOMS_LIST";
 
 export const ROOM_JOIN = "ROOM_JOIN";

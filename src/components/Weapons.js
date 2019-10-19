@@ -1,14 +1,22 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
+
+import WeaponItem from "./WeaponsItem";
 import classNames from "classnames";
 
-import GameInfo from "./GameInfo";
-
 class Weapons extends Component {
+    static propTypes = {
+        applyChoose: PropTypes.func.isRequired,
+        startNewGame: PropTypes.func.isRequired,
+        gameFinish: PropTypes.bool.isRequired,
+    };
+
     constructor(props) {
         super(props);
 
         this.state = {
             selectedWeapon: '',
+            error: '',
         };
 
     }
@@ -16,67 +24,51 @@ class Weapons extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         const {selectedWeapon} = this.state;
-        const {startGame} = this.props;
+        const {
+            applyChoose,
+        } = this.props;
+
+
         if(!selectedWeapon) {
-            console.warn('Нужно выбрать!');
+            this.setState(state => ({error: 'Нужно выбрать предмет'}));
             return false;
         }
-        startGame(selectedWeapon);
+        applyChoose(selectedWeapon);
+    };
+
+    startNewGame = (e) => {
+        e.preventDefault();
+        const {startNewGame} = this.props;
+        this.setState(state => ({selectedWeapon: ''}));
+        startNewGame();
 
     };
 
     chooseWeapon = (name) => {
         this.setState(state=> ({selectedWeapon: name}));
-
     };
 
     render() {
-        const {
-            gameResult,
-            gameHistory,
-            gameFinish,
-            aiRate,
-        } = this.props;
-        const {selectedWeapon} = this.state;
+        const {error} = this.state;
+        const {gameFinish} = this.props;
 
         return (
             <form onSubmit={this.handleSubmit}>
+                {error ? <div className="weapons__error">{error}</div> : ''}
                 <div className="weapons" >
-                    <label className="weapons__item">
-                        <input className="weapons__item__inp"
-                               onChange={() => this.chooseWeapon('rock')}
-                               type="radio" name="weapon" hidden/>
-                        <span className="weapons__item__span"/>
-                        Камень
-                    </label>
-                    <label className="weapons__item">
-                        <input className="weapons__item__inp"
-                               type="radio"
-                               onChange={() => this.chooseWeapon('scissors')}
-                               name="weapon" hidden/>
-                        <span className="weapons__item__span"/>
-                        Н
-                    </label>
-                    <label className="weapons__item">
-                        <input className="weapons__item__inp"
-                               type="radio"
-                               onChange={() => this.chooseWeapon('paper')}
-                               name="weapon" hidden/>
-                        <span className="weapons__item__span"/>
-                        Б
-                    </label>
+                    <WeaponItem chooseWeapon={this.chooseWeapon} name={'rock'}/>
+                    <WeaponItem chooseWeapon={this.chooseWeapon} name={'scissors'}/>
+                    <WeaponItem chooseWeapon={this.chooseWeapon} name={'paper'}/>
                 </div>
-                <button type="submit" className="weapons__btn">
-                    Играть
-                </button>
-
-                {/*{JSON.stringify(gameHistory)}*/}
-
                 {gameFinish ?
-                    <GameInfo aiRate={aiRate}
-                              gameResult={gameResult}
-                              playerRate={selectedWeapon}
-                    /> : ""}
+                    <button onClick={this.startNewGame} className="weapons__btn">
+                        Начать новую игру
+                    </button>
+                    :
+                    <button type="submit" className="weapons__btn">
+                        Подтвердить выбор
+                    </button>
+                }
             </form>
         )
     }

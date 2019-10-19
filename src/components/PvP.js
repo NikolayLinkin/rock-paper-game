@@ -1,7 +1,11 @@
 import React, {Component} from "react";
-import WeaponsContainer from "../containers/WeaponsContainer";
 import PropTypes from "prop-types";
-import RoomsList from "./RoomsList";
+
+
+import InfoMessage from "./InfoMessages";
+import UserNameForm from "./UserNameForm";
+import Weapons from "./Weapons";
+import GameResult from "./GameResult";
 
 class PvP extends Component {
 
@@ -10,18 +14,34 @@ class PvP extends Component {
     };
 
     componentDidMount() {
-        this.props.fetchRooms();
+        const {
+            connectToServer,
+            joinInGame,
+            userName,
+            wWinner,
+        } = this.props;
+
+        connectToServer();
+        wWinner();
+
+        // joinInGame(userName);
+
+        // this.props.fetchRooms();
+    }
+
+    componentWillUnmount() {
+        this.props.leaveFromServer();
     }
 
     createRoom = (roomName) => {
-      roomName = 'my first room';
-      const userName = `user ${new Date()}`;
+        roomName = 'my first room';
+        const userName = `user ${new Date()}`;
 
-      const {
-          createRoom
-      } = this.props;
+        const {
+            createRoom
+        } = this.props;
 
-      createRoom(roomName, userName);
+        createRoom(roomName, userName);
     };
 
     roomLeave = (roomName) => {
@@ -31,29 +51,34 @@ class PvP extends Component {
     };
 
     render() {
-        const {roomsList, currentRoom, createRoom} = this.props;
+        const {
+            gameResult,
+            enemyRate,
+            playerRate,
+            gameFinish,
+            gameMessage,
+            loginUser,
+            userName,
+            fetchRate,
+        } = this.props;
 
         return (
-            <div className="wrapper">
-                <span onClick={() => this.createRoom()}>New Room</span>
-                <br/>
-                <span onClick={() => this.roomLeave()}>Leave room</span>
-                <RoomsList rooms={roomsList}
-                           joinToRoom={createRoom}
-                           currentRoom={currentRoom}
-                />
+            <>
 
-                {/*<div className="choose-panel">*/}
-                {/*    <h2 className="title">*/}
-                {/*        Для начала игры, нужно выбрать позицию:*/}
-                {/*    </h2>*/}
-                {/*    <WeaponsContainer/>*/}
-                {/*</div>*/}
+                {/*<Weapons applyChoose={1} gameFinis={gameFinish} startNewGame={1}/>*/}
+                {/*<InfoMessage message={gameMessage} color="red"/>*/}
+                {!userName ?
+                    <UserNameForm loginUser={loginUser}/>
+                    :
+                    <Weapons applyChoose={fetchRate} gameFinish={gameFinish} startNewGame={fetchRate}/>
+                }
 
-                {/*<div className="game__results">*/}
-
-                {/*</div>*/}
-            </div>
+                {gameFinish ?
+                    <GameResult enemyRate={enemyRate}
+                                playerRate={playerRate}
+                                gameResult={gameResult}
+                    /> : "" }
+            </>
         );
     }
 }

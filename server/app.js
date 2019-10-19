@@ -1,5 +1,6 @@
 const http = require('http');
 const express = require('express');
+const users = require('./users')();
 
 const app = express();
 const server = http.createServer(app);
@@ -17,61 +18,96 @@ let gameRooms = [
     {id: 3, name: 'more room'},
 ];
 
+const PAPER = "paper";
+const SCISSORS = "scissors";
+const ROCK = "rock";
+
+function getWinner(users) {
+    const firstUser = users[0];
+    const secondUser = users[1];
+
+    const firstUserRate = firstUser.rate;
+    const secondUserRate = secondUser.rate;
+
+    if (firstUserRate === secondUserRate) {
+        return {
+            winnerId: 0,
+            firstUserRate: firstUserRate,
+            secondUserRate: secondUserRate,
+        };
+    }
+
+    if (
+        (firstUserRate === PAPER && secondUserRate === ROCK) ||
+        (firstUserRate === SCISSORS && secondUserRate === PAPER) ||
+        (firstUserRate === ROCK && secondUserRate === SCISSORS)
+    ) {
+        return {
+            winnerId: firstUser.id,
+            firstUserRate: firstUserRate,
+            secondUserRate: secondUserRate
+        };
+    }
+
+    return {
+        winnerId: secondUser.id,
+        firstUserRate: firstUserRate,
+        secondUserRate: secondUserRate,
+    };
+}
+
+let rates = [];
+
 io.on('connection', socket => {
     let addedUser = false;
     console.info('New client connected');
 
-    socket.on('add user', username => {
-        console.info('add user');
+    socket.on('userJoin', (data, cb) => {
         if (addedUser) return;
 
-        socket.username = username;
+        if (numUsers === 2) {
+            cb({error: 'Комната уже заполнена'});
+        }
+        if(!data.userName) {
+            cb({error: 'данные не корректны'});
+        }
+
+        console.info('new user join' + data.userName);
+
+        users.remove(socket.id);
+        users.add({
+            id: socket.id,
+            name: data.userName,
+        });
+
+        cb({id: socket.id});
+
         ++numUsers;
         addedUser = true;
 
-        socket.emit('login', {
-            numUsers,
-        });
-
-        socket.broadcast.emit('user joined', {
-            username: socket.username,
-            numUsers,
-        });
-    });
-
-    socket.emit('getAllRooms', gameRooms);
-
-    socket.on('createRoom', (data, cb) => {
-        if(addedUser) {
-            return cb({error: 'Уже в комнате'});
-        }
-        if (!data.name && !data.room) {
-            return cb({error: 'Данные некорректны'});
+        if (numUsers === 2) {
+            cb({message: 'Игра начнётся через 15 сек'})
         }
 
-        addedUser = true;
-
-        // if (numUsers === 2) {
-        //     return cb({error: 'Комната уже полная'});
-        // }
-
-        // if (!gameRooms.filter(room => room.name === data.name).length) {
-        //     gameRooms.push({id: gameRooms.length, name: data.room});
-        // }
-        gameRooms.push({id: gameRooms.length, name: data.room});
-
-        socket.emit('getAllRooms', gameRooms);
-
-        ++numUsers;
-        socket.join(data.room);
-        cb({userId: socket.id});
-        socket.broadcast.to(data.room).emit('userConnect', {m: `Зашёл второй игрк, игра скоро начнётся`});
+        if (numUsers < 2) {
+            cb({message: 'Ожидание другого игрока'})
+        }
     });
 
-    socket.on('roomLeave', (data, cb) => {
-       socket.leave(data.room);
-       addedUser = false;
-       console.info('User leave' + socket.id);
+    socket.on('findWinner', (data, cb) => {
+        const {socketId, rate} = data;
+
+        const user = users.get(socketId);
+        user.rate = rate;
+        rates.push(user);
+        cb({});
+
+        if(rates.length === 2) {
+            const {winnerId, firstUserRate, secondUserRate} = getWinner(rates);
+            io.emit('winner', {winnerId, firstUserRate, secondUserRate});
+            rates = [];
+            return;
+        }
     });
 
     socket.on('disconnect', () => {
