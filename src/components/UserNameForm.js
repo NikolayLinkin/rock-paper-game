@@ -22,7 +22,7 @@ class UserNameForm extends Component {
             this.setState(state => ({error: 'Имя не может быть пустым'}));
         }
 
-        this.props.loginUser(value);
+        this.props.loginUser(value, '1234');
         this.input.value = '';
 
     };

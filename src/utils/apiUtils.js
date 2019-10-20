@@ -58,19 +58,20 @@ export const connect = () => {
 
 export const subscribes = (socket) => {
     return {
-        getWinner() {return onApi('winner')}
+        getWinner() {return onApi('getWinner')},
+        getRooms() {return onApi('getRoomsList')},
     }
 
 };
 
 export const disconnect = () => {socket.disconnect(); socket = null;};
 
-export const userJoin = userName => emitApi('userJoin', {userName});
+/**
+ *
+ * @param userName {string} имя пользователя
+ * @param roomName {string} название комнаты
+ * @returns {Promise}
+ */
+export const userJoin = (userName, roomName) => emitApi('userJoin', {userName, roomName});
 
-export const fetchRate = (rate, socketId) => emitApi('findWinner', {rate, socketId});
-
-// export const createRoom = (room, name='тест_user') => emitApi('createRoom', {room, name});
-
-// export const roomLeave = room => emitApi('roomLeave', {room});
-
-// export const getAllRooms = () => onApi('getAllRooms');
+export const fetchRate = (rate, socketId) => emitApi('userRate', {rate});

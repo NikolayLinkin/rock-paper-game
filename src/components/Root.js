@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Link, Route} from "react-router-dom";
 import PvEContainer from "../containers/PvEContainer";
 import PvPContainer from "../containers/PvPContainer";
+import RoomsList from "./RoomsList";
 
 class Root extends Component {
 
@@ -15,6 +16,7 @@ class Root extends Component {
 
                 <Route exact path="/pve" component={PvEContainer}/>
                 <Route exact path="/pvp" component={PvPContainer}/>
+                <Route exact path="/rooms" component={RoomsList}/>
             </div>
         );
     }

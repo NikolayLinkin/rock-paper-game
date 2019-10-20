@@ -41,7 +41,6 @@ class Weapons extends Component {
         const {startNewGame} = this.props;
         this.setState(state => ({selectedWeapon: ''}));
         startNewGame();
-
     };
 
     chooseWeapon = (name) => {

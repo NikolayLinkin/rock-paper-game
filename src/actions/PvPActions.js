@@ -12,17 +12,24 @@ export const leaveFromServer = () => async dispatch => {
     await api.disconnect();
 };
 
-export const joinInGame = (name) => async dispatch => {
-    // dispatch({type: types.GAME_START});
-
+/**
+ *
+ * @param name {string}
+ * @param room {string}
+ * @returns {Function}
+ */
+export const joinInGame = (name, room) => async dispatch => {
 
     if (!name) {
         dispatch({type: types.GAME_UPDATE_STATUS, message: 'Нужно ввести имя'});
     } else {
-        const {id, error} = await api.userJoin(name);
+        const {id, error} = await api.userJoin(name, room);
 
-        dispatch({type: types.SAVE_SOCKET_ID, id});
-        dispatch({type: types.GAME_UPDATE_STATUS, error});
+        if(error) {
+            dispatch({type: types.GAME_UPDATE_STATUS, error});
+        } else {
+            dispatch({type: types.SAVE_SOCKET_ID, id});
+        }
     }
 };
 

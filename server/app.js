@@ -1,8 +1,17 @@
 const http = require('http');
 const express = require('express');
 const users = require('./users')();
+const rooms = require('./rooms')();
 
 const app = express();
+
+let allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Headers', "*");
+    next();
+};
+app.use(allowCrossDomain);
+
 const server = http.createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3005;
@@ -11,18 +20,12 @@ server.listen(port, () => {
     console.log(`Server has started on port ${port}`);
 });
 
-let numUsers = 0;
-let gameRooms = [
-    {id: 1, name: 'first room'},
-    {id: 2, name: 'second room'},
-    {id: 3, name: 'more room'},
-];
-
-const PAPER = "paper";
-const SCISSORS = "scissors";
-const ROCK = "rock";
-
 function getWinner(users) {
+    const PAPER = "paper";
+    const SCISSORS = "scissors";
+    const ROCK = "rock";
+
+
     const firstUser = users[0];
     const secondUser = users[1];
 
@@ -56,70 +59,113 @@ function getWinner(users) {
     };
 }
 
-let rates = [];
+// const rooms = ['123', 'my room'];
+
 
 io.on('connection', socket => {
-    let addedUser = false;
     console.info('New client connected');
 
-    socket.on('userJoin', (data, cb) => {
-        if (addedUser) return;
+    const userJoin = (data) => {
+        const {userName, roomName} = data;
 
-        if (numUsers === 2) {
-            cb({error: 'Комната уже заполнена'});
+        socket.join(roomName);
+        socket.room = roomName;
+
+        rooms.createRoom(roomName);
+        rooms.addPlayer(roomName, {id: socket.id, name: userName});
+    };
+
+    const startGame = data => {
+
+        const room = rooms.getRoom(socket.room);
+        let players = [];
+        const playersInRoom = room.getPlayers();
+
+        for(let player in playersInRoom) {
+            if(playersInRoom.hasOwnProperty(player)) {
+                players.push(playersInRoom[player]);
+            }
         }
-        if(!data.userName) {
-            cb({error: 'данные не корректны'});
-        }
 
-        console.info('new user join' + data.userName);
-
-        users.remove(socket.id);
-        users.add({
-            id: socket.id,
-            name: data.userName,
+        io.to(socket.room).emit('getWinner', {
+            ...getWinner(players),
         });
+    };
 
-        cb({id: socket.id});
+    const roomUpdate = (changes={}) =>{
 
-        ++numUsers;
-        addedUser = true;
+        if(changes.rate) {
+            const room = rooms.getRoom(socket.room);
+            let haveAllRates = false;
 
-        if (numUsers === 2) {
-            cb({message: 'Игра начнётся через 15 сек'})
+            room.setRate(socket.id, changes.rate);
+
+            const rates = room.getRates();
+
+            if(rates.length === 2) {
+                haveAllRates = true;
+            }
+
+            if(haveAllRates && room.getPlayersCount() === 2) {
+                startGame();
+            }
         }
+    };
 
-        if (numUsers < 2) {
-            cb({message: 'Ожидание другого игрока'})
-        }
-    });
 
-    socket.on('findWinner', (data, cb) => {
-        const {socketId, rate} = data;
+    socket.on('userJoin', (data, cb) => {
+        const {roomName, userName} = data;
+        const room = rooms.getRoom(roomName);
 
-        const user = users.get(socketId);
-        user.rate = rate;
-        rates.push(user);
-        cb({});
-
-        if(rates.length === 2) {
-            const {winnerId, firstUserRate, secondUserRate} = getWinner(rates);
-            io.emit('winner', {winnerId, firstUserRate, secondUserRate});
-            rates = [];
+        if(!roomName || !userName) {
+            cb({
+                status: 'Error',
+                error: 'Не корректные данные',
+            });
             return;
         }
+
+        if (room && room.getPlayersCount() === 2) {
+            cb({
+                status: "Error",
+                error: "Комната уже полная"
+            });
+            return false;
+        }
+
+        userJoin(data);
+        cb({status: "ok"});
     });
+
+    socket.on('userLeave', (data, cb) => {
+       const {roomName} = data;
+       socket.leave(roomName);
+       const room = rooms.getRoom(roomName);
+
+       if(room) {
+           room.removePlayer(socket.id);
+       }
+    });
+
+    socket.on('userRate', (data, cb) => {
+        const {rate} = data;
+
+        if(!rate) {
+            cb({status: "Error", error: "Нужно сделать ставку"});
+            return false;
+        }
+
+        roomUpdate({rate});
+    });
+
 
     socket.on('disconnect', () => {
         console.log("Client disconnected");
-
-        if (addedUser) {
-            --numUsers;
-
-            socket.broadcast.emit('user left', {
-                username: socket.username,
-                numUsers,
-            });
-        }
     });
+});
+
+app.route('/api/rooms')
+    .get((req, res) => {
+    console.log(rooms.getRooms());
+    res.json(rooms.getRooms());
 });

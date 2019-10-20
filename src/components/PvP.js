@@ -10,39 +10,24 @@ import GameResult from "./GameResult";
 class PvP extends Component {
 
     static propTypes = {
-        createRoom: PropTypes.func.isRequired
+        // createRoom: PropTypes.func.isRequired
     };
 
     componentDidMount() {
         const {
             connectToServer,
-            joinInGame,
-            userName,
             wWinner,
+            getRooms,
         } = this.props;
 
         connectToServer();
+        getRooms();
         wWinner();
-
-        // joinInGame(userName);
-
-        // this.props.fetchRooms();
     }
 
     componentWillUnmount() {
         this.props.leaveFromServer();
     }
-
-    createRoom = (roomName) => {
-        roomName = 'my first room';
-        const userName = `user ${new Date()}`;
-
-        const {
-            createRoom
-        } = this.props;
-
-        createRoom(roomName, userName);
-    };
 
     roomLeave = (roomName) => {
         roomName = 'my first room';
@@ -56,21 +41,23 @@ class PvP extends Component {
             enemyRate,
             playerRate,
             gameFinish,
-            gameMessage,
             loginUser,
             userName,
             fetchRate,
+            startNewGame,
         } = this.props;
 
         return (
             <>
 
-                {/*<Weapons applyChoose={1} gameFinis={gameFinish} startNewGame={1}/>*/}
                 {/*<InfoMessage message={gameMessage} color="red"/>*/}
                 {!userName ?
                     <UserNameForm loginUser={loginUser}/>
                     :
-                    <Weapons applyChoose={fetchRate} gameFinish={gameFinish} startNewGame={fetchRate}/>
+                    <Weapons applyChoose={fetchRate}
+                             gameFinish={gameFinish}
+                             startNewGame={startNewGame}
+                    />
                 }
 
                 {gameFinish ?

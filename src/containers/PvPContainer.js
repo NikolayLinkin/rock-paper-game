@@ -12,7 +12,14 @@ import {
     wWinner,
 } from "../actions/PvPActions";
 
-import {loginUser} from "../actions/SessionActions";
+import {
+    startNewGame,
+} from "../actions/GameActions";
+
+import {
+    loginUser,
+    getRooms,
+} from "../actions/SessionActions";
 
 import {
     getRoomsList,
@@ -48,4 +55,6 @@ export default connect(mapStateToProps, {
     loginUser,
     fetchRate,
     wWinner,
+    startNewGame,
+    getRooms,
 })(PvPContainer);
