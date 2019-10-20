@@ -77,8 +77,8 @@ class Rooms {
 
     }
 
-    remove() {
-
+    removeRoom(roomName) {
+        delete this.rooms[roomName];
     }
 }
 

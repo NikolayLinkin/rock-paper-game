@@ -145,6 +145,9 @@ io.on('connection', socket => {
        if(room) {
            room.removePlayer(socket.id);
        }
+       if(room.getPlayersCount() === 0) {
+           rooms.removeRoom(roomName);
+       }
     });
 
     socket.on('userRate', (data, cb) => {
