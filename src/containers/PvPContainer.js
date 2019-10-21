@@ -6,9 +6,11 @@ import PvP from "../components/PvP";
 import {
     connectToServer,
     leaveFromServer,
+    fetchRooms,
+    createRoom,
 
     joinInGame,
-    fetchRate,
+    emitRate,
     wWinner,
 } from "../actions/PvPActions";
 
@@ -18,11 +20,10 @@ import {
 
 import {
     loginUser,
-    getRooms,
 } from "../actions/SessionActions";
 
 import {
-    getRoomsList,
+    getRooms,
     getCurrentRoom,
     getGameFinish,
     getEnemyRate,
@@ -36,7 +37,7 @@ const PvPContainer = props => <PvP {...props}/>;
 
 const mapStateToProps = state => {
     return {
-        roomsList: getRoomsList(state),
+        roomsList: getRooms(state),
         currentRoom: getCurrentRoom(state),
         enemyRate: getEnemyRate(state),
         playerRate: getPlayerRate(state),
@@ -50,11 +51,12 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
     connectToServer,
     leaveFromServer,
+    fetchRooms,
+    createRoom,
 
     joinInGame,
     loginUser,
-    fetchRate,
+    emitRate,
     wWinner,
     startNewGame,
-    getRooms,
 })(PvPContainer);

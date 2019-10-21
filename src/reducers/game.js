@@ -30,14 +30,12 @@ const game = (state = initialState, action) => {
                 finish: true,
             }
         }
-
         case types.GAME_UPDATE_STATUS: {
             return {
                 ...state,
                 message: action.message,
             }
         }
-
         case types.UPDATE_GAME_HISTORY: {
             return {
                 ...state,

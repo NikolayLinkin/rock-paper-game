@@ -1,5 +1,8 @@
+let roomId = 0;
+
 class Room {
     constructor() {
+        this.id = ++roomId;
         this.players = {};
         this.playersCount = 0;
         this.rates = [];

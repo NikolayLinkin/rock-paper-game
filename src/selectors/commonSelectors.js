@@ -6,6 +6,6 @@ export const getGameMessage = state => state.game.message;
 export const getGameHistory = state => state.game.history;
 export const getGameFinish = state => state.game.finish;
 
-export const getRoomsList = state => state.session.rooms;
+export const getRooms = state => state.session.rooms;
 export const getCurrentRoom = state => state.session.currentRoom;
 export const getUserName = state => state.session.userName;

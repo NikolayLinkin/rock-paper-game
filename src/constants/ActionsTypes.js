@@ -8,7 +8,7 @@ export const GAME_CHANGE_MODE = "GAME_CHANGE_MODE";
 
 export const SAVE_SOCKET_ID = "SAVE_USER_ID";
 export const SAVE_USER_NAME = "SAVE_USER_NAME";
-export const FETCH_ROOMS_LIST = "FETCH_ROOMS_LIST";
+export const FETCH_ROOMS = "FETCH_ROOMS";
 
 export const ROOM_JOIN = "ROOM_JOIN";
 export const ROOM_LEAVE = "ROOM_LEAVE";

@@ -4,9 +4,11 @@ class RoomsList extends Component {
     componentDidMount() {
         fetch('http://localhost:3005/api/rooms', {method: "GET"})
             .then(
-                res => {console.log(res);  return  res}
+                res => {console.log(res);  return  res},
             )
     }
+
+
 
     render() {
         return (

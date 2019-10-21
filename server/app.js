@@ -5,7 +5,7 @@ const rooms = require('./rooms')();
 
 const app = express();
 
-let allowCrossDomain = function(req, res, next) {
+let allowCrossDomain = function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Headers', "*");
     next();
@@ -81,8 +81,8 @@ io.on('connection', socket => {
         let players = [];
         const playersInRoom = room.getPlayers();
 
-        for(let player in playersInRoom) {
-            if(playersInRoom.hasOwnProperty(player)) {
+        for (let player in playersInRoom) {
+            if (playersInRoom.hasOwnProperty(player)) {
                 players.push(playersInRoom[player]);
             }
         }
@@ -92,9 +92,9 @@ io.on('connection', socket => {
         });
     };
 
-    const roomUpdate = (changes={}) =>{
+    const roomUpdate = (changes = {}) => {
 
-        if(changes.rate) {
+        if (changes.rate) {
             const room = rooms.getRoom(socket.room);
             let haveAllRates = false;
 
@@ -102,11 +102,11 @@ io.on('connection', socket => {
 
             const rates = room.getRates();
 
-            if(rates.length === 2) {
+            if (rates.length === 2) {
                 haveAllRates = true;
             }
 
-            if(haveAllRates && room.getPlayersCount() === 2) {
+            if (haveAllRates && room.getPlayersCount() === 2) {
                 startGame();
             }
         }
@@ -117,7 +117,7 @@ io.on('connection', socket => {
         const {roomName, userName} = data;
         const room = rooms.getRoom(roomName);
 
-        if(!roomName || !userName) {
+        if (!roomName || !userName) {
             cb({
                 status: 'Error',
                 error: 'Не корректные данные',
@@ -134,26 +134,28 @@ io.on('connection', socket => {
         }
 
         userJoin(data);
-        cb({status: "ok"});
+
+        console.info(`New user join ${userName} in ${roomName}`);
+        cb({status: "ok", message: `Вы подключились к комнате ${roomName}`});
     });
 
     socket.on('userLeave', (data, cb) => {
-       const {roomName} = data;
-       socket.leave(roomName);
-       const room = rooms.getRoom(roomName);
+        const {roomName} = data;
+        socket.leave(roomName);
+        const room = rooms.getRoom(roomName);
 
-       if(room) {
-           room.removePlayer(socket.id);
-       }
-       if(room.getPlayersCount() === 0) {
-           rooms.removeRoom(roomName);
-       }
+        if (room) {
+            room.removePlayer(socket.id);
+        }
+        if (room.getPlayersCount() === 0) {
+            rooms.removeRoom(roomName);
+        }
     });
 
     socket.on('userRate', (data, cb) => {
         const {rate} = data;
 
-        if(!rate) {
+        if (!rate) {
             cb({status: "Error", error: "Нужно сделать ставку"});
             return false;
         }
@@ -167,8 +169,13 @@ io.on('connection', socket => {
     });
 });
 
+
+/*******************API*************************/
+
+/**
+ *
+ */
 app.route('/api/rooms')
     .get((req, res) => {
-    console.log(rooms.getRooms());
-    res.json(rooms.getRooms());
-});
+        res.json(rooms.getRooms());
+    });

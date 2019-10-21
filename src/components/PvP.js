@@ -16,18 +16,27 @@ class PvP extends Component {
     componentDidMount() {
         const {
             connectToServer,
+            fetchRooms,
             wWinner,
-            getRooms,
         } = this.props;
 
         connectToServer();
-        getRooms();
+        fetchRooms();
+
         wWinner();
     }
 
     componentWillUnmount() {
         this.props.leaveFromServer();
     }
+
+    createRoom = (e) => {
+        e.preventDefault()
+
+        const {createRoom} = this.props;
+
+        createRoom('', '');
+    };
 
     roomLeave = (roomName) => {
         roomName = 'my first room';
@@ -43,28 +52,38 @@ class PvP extends Component {
             gameFinish,
             loginUser,
             userName,
-            fetchRate,
+            emitRate,
             startNewGame,
+            roomsList,
         } = this.props;
 
         return (
             <>
 
                 {/*<InfoMessage message={gameMessage} color="red"/>*/}
-                {!userName ?
-                    <UserNameForm loginUser={loginUser}/>
-                    :
-                    <Weapons applyChoose={fetchRate}
-                             gameFinish={gameFinish}
-                             startNewGame={startNewGame}
-                    />
-                }
+
+                {!roomsList.length ? 'Нет созданных комнат' : JSON.stringify(roomsList)}
+                <button onClick={this.createRoom}>Создать комнату</button>
+                {/*{roomsList.map(room =>*/}
+                {/*    <div key={room.id}>*/}
+                {/*        {JSON.stringify(room)}*/}
+                {/*    </div>*/}
+                {/*)}*/}
+
+                {/*{!userName ?*/}
+                {/*    <UserNameForm loginUser={loginUser}/>*/}
+                {/*    :*/}
+                {/*    <Weapons applyChoose={emitRate}*/}
+                {/*             gameFinish={gameFinish}*/}
+                {/*             startNewGame={startNewGame}*/}
+                {/*    />*/}
+                {/*}*/}
 
                 {gameFinish ?
                     <GameResult enemyRate={enemyRate}
                                 playerRate={playerRate}
                                 gameResult={gameResult}
-                    /> : "" }
+                    /> : ""}
             </>
         );
     }

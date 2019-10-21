@@ -23,12 +23,13 @@ const session = (state=initialState, action) => {
             }
         }
 
-        case types.FETCH_ROOMS_LIST: {
+        case types.FETCH_ROOMS: {
             return {
                 ...state,
                 rooms: action.rooms,
             }
         }
+
 
         case types.ROOM_JOIN: {
             return {
