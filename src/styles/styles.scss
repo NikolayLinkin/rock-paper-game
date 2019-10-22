@@ -1,2 +1,39 @@
 @import "./main/index";
 @import "./weapons/index";
+
+.game-mode__btns {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.game-mode__btn {
+  position: relative;
+  width: 50%;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0;
+    transition: opacity, .2s;
+  }
+
+  &--pve {
+    background: green;
+  }
+
+  &--pvp {
+    background: yellow;
+  }
+
+  &:hover {
+    &:before {
+      opacity: .3;
+    }
+  }
+}

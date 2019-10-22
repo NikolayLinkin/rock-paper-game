@@ -1,11 +1,11 @@
 export const callApi = (url, options) => {
     return fetch(url, options)
         .then(
-            res => res.json(),
+            response => response.ok ? response.json() : Promise.reject(response),
             error => Promise.reject(error),
         )
         .then(
-            json => json ? ({json}) : Promise.reject(json),
+            json => json ? json : Promise.reject(json),
             error => ({error}),
         )
         .catch(

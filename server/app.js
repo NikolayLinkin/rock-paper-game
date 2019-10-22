@@ -112,6 +112,20 @@ io.on('connection', socket => {
         }
     };
 
+    const roomLeave = () => {
+        const roomName = socket.room;
+        socket.leave(roomName);
+        const room = rooms.getRoom(roomName);
+
+        if (room) {
+            room.removePlayer(socket.id);
+
+            if (room.getPlayersCount() === 0) {
+                rooms.removeRoom(roomName);
+            }
+        }
+    };
+
 
     socket.on('userJoin', (data, cb) => {
         const {roomName, userName} = data;
@@ -140,16 +154,7 @@ io.on('connection', socket => {
     });
 
     socket.on('userLeave', (data, cb) => {
-        const {roomName} = data;
-        socket.leave(roomName);
-        const room = rooms.getRoom(roomName);
-
-        if (room) {
-            room.removePlayer(socket.id);
-        }
-        if (room.getPlayersCount() === 0) {
-            rooms.removeRoom(roomName);
-        }
+        roomLeave();
     });
 
     socket.on('userRate', (data, cb) => {
@@ -166,6 +171,8 @@ io.on('connection', socket => {
 
     socket.on('disconnect', () => {
         console.log("Client disconnected");
+
+        roomLeave();
     });
 });
 
@@ -177,5 +184,5 @@ io.on('connection', socket => {
  */
 app.route('/api/rooms')
     .get((req, res) => {
-        res.json(rooms.getRooms());
+        res.json({rooms: rooms.getRooms()});
     });

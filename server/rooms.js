@@ -1,8 +1,9 @@
 let roomId = 0;
 
 class Room {
-    constructor() {
+    constructor(name) {
         this.id = ++roomId;
+        this.name = name;
         this.players = {};
         this.playersCount = 0;
         this.rates = [];
@@ -55,7 +56,7 @@ class Rooms {
         if(room in this.rooms) {
             return false;
         }
-        this.rooms[room] = new Room();
+        this.rooms[room] = new Room(room);
     }
 
     addPlayer(room, player) {
@@ -65,15 +66,20 @@ class Rooms {
     removeRoom(room) {
         if(room in this.rooms) {
             delete this.rooms[room];
+            --roomId;
         }
     }
 
     getRooms() {
-        return this.rooms;
+        const result = [];
+        for (let room in this.rooms) {
+            result.push(this.rooms[room]);
+        }
+        return result;
     }
 
-    getRoom(id) {
-        return this.rooms[id];
+    getRoom(name) {
+        return this.rooms[name];
     }
 
     getScore(userName) {

@@ -26,7 +26,7 @@ const session = (state=initialState, action) => {
         case types.FETCH_ROOMS: {
             return {
                 ...state,
-                rooms: action.rooms,
+                rooms: [...action.rooms],
             }
         }
 

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
 import createStore from "./store/createStore";
+import "normalize.css";
 import "./styles/styles.scss";
 import RootContainer from "./containers/RootContainer";
 import {BrowserRouter as Router} from "react-router-dom";

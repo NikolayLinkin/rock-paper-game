@@ -49,6 +49,12 @@ const createRoomError = error => ({
     error,
 });
 
+/**
+ * Создание новой комнаты
+ * @param userName {string} имя игрока
+ * @param roomName {string} название комнаты
+ * @returns {Function}
+ */
 export const createRoom = (userName, roomName) => async dispatch => {
     const {error, message} = socket.userJoin(userName, roomName);
 

@@ -1,17 +1,22 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 
-
-import InfoMessage from "./InfoMessages";
-import UserNameForm from "./UserNameForm";
-import Weapons from "./Weapons";
-import GameResult from "./GameResult";
+import PopupForm from "./PopupForm";
 
 class PvP extends Component {
-
     static propTypes = {
-        // createRoom: PropTypes.func.isRequired
+        connectToServer: PropTypes.func.isRequired,
+        leaveFromServer: PropTypes.func.isRequired,
+        fetchRooms: PropTypes.func.isRequired,
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            popupIsOpen: false,
+        };
+    }
 
     componentDidMount() {
         const {
@@ -30,12 +35,9 @@ class PvP extends Component {
         this.props.leaveFromServer();
     }
 
-    createRoom = (e) => {
-        e.preventDefault()
-
-        const {createRoom} = this.props;
-
-        createRoom('', '');
+    togglePopup = (e) => {
+        e.preventDefault();
+        this.setState(state => ({popupIsOpen: !state.popupIsOpen}));
     };
 
     roomLeave = (roomName) => {
@@ -46,45 +48,25 @@ class PvP extends Component {
 
     render() {
         const {
-            gameResult,
-            enemyRate,
-            playerRate,
-            gameFinish,
-            loginUser,
-            userName,
-            emitRate,
-            startNewGame,
             roomsList,
+            createRoom,
         } = this.props;
 
+        const {popupIsOpen} = this.state;
+
         return (
-            <>
-
-                {/*<InfoMessage message={gameMessage} color="red"/>*/}
-
+            <div className="wrapper">
                 {!roomsList.length ? 'Нет созданных комнат' : JSON.stringify(roomsList)}
-                <button onClick={this.createRoom}>Создать комнату</button>
+                <button onClick={this.togglePopup}>Создать комнату</button>
+                {popupIsOpen ?
+                    <PopupForm createRoom={createRoom} closePopup={this.togglePopup}/>
+                    : ''}
                 {/*{roomsList.map(room =>*/}
                 {/*    <div key={room.id}>*/}
                 {/*        {JSON.stringify(room)}*/}
                 {/*    </div>*/}
                 {/*)}*/}
-
-                {/*{!userName ?*/}
-                {/*    <UserNameForm loginUser={loginUser}/>*/}
-                {/*    :*/}
-                {/*    <Weapons applyChoose={emitRate}*/}
-                {/*             gameFinish={gameFinish}*/}
-                {/*             startNewGame={startNewGame}*/}
-                {/*    />*/}
-                {/*}*/}
-
-                {gameFinish ?
-                    <GameResult enemyRate={enemyRate}
-                                playerRate={playerRate}
-                                gameResult={gameResult}
-                    /> : ""}
-            </>
+            </div>
         );
     }
 }
