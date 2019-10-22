@@ -37,6 +37,7 @@ const onApi = event => {
             if(res.error) {
                 reject(res.error);
             }
+            console.log(res);
 
             resolve(res);
         })
@@ -54,9 +55,11 @@ export const connect = () => {
 
 export const subscribes = () => {
     return {
-        getWinner() {return onApi('getWinner')},
-    }
-
+        getWinner() {
+            return onApi('getWinner');
+        },
+        checkStatus() {return onApi('checkStatus')},
+    };
 };
 
 export const disconnect = () => {socket.disconnect(); socket = null;};

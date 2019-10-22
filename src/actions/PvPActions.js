@@ -15,33 +15,9 @@ export const leaveFromServer = () => async dispatch => {
     await socket.disconnect();
 };
 
-/**
- * подключение к комнате
- * @param name {string} имя игрока
- * @param room {string} имя комнаты
- * @returns {Function}
- */
-export const joinInGame = (name, room) => async dispatch => {
-
-    if (!name) {
-        dispatch({type: types.GAME_UPDATE_STATUS, message: 'Нужно ввести имя'});
-    } else {
-        const {id, error} = await socket.userJoin(name, room);
-
-        if(error) {
-            dispatch({type: types.GAME_UPDATE_STATUS, error});
-        } else {
-            dispatch({type: types.SAVE_SOCKET_ID, id});
-        }
-    }
-};
-
 export const leaveFromRoom = (roomName) => async (dispatch, getState) => {
-    const state = getState();
-    const currentRoom = state.session;
-
-    await socket.userLeave(currentRoom);
-    dispatch({type: types.ROOM_JOIN, currentRoom: null});
+    await socket.userLeave();
+    dispatch({type: types.ROOM_LEAVE, currentRoom: null});
 };
 
 export const fetchRooms = () => async dispatch => {
@@ -53,6 +29,8 @@ const createRoomError = error => ({
     error,
 });
 
+//TODO: подумать как лучше проверять ограничение создания 2х комнат с одиноковым именем,
+// по параметру или по названию события
 /**
  * Создание новой комнаты
  * @param userName {string} имя игрока
@@ -60,13 +38,25 @@ const createRoomError = error => ({
  * @returns {Function}
  */
 export const createRoom = (userName, roomName) => async dispatch => {
-    const {error, message} = socket.userJoin(userName, roomName);
+    const {error, socketId} = await socket.userJoin(userName, roomName);
 
     if(error) {
         dispatch(createRoomError(error));
     } else {
-        dispatch({type: types.ROOM_JOIN, currentRoom: roomName});
-        dispatch({type: types.GAME_UPDATE_STATUS, message});
+        dispatch({type: types.ROOM_JOIN, currentRoom: roomName, userName, socketId,});
+        // dispatch({type: types.GAME_UPDATE_STATUS, message});
+    }
+};
+
+export const checkGameStatus = () => async dispatch => {
+    const {canStart} = await socket.subscribes().checkStatus();
+
+    console.log(canStart);
+
+    if(canStart) {
+        dispatch({type: types.GAME_CAN_START});
+    } else {
+        dispatch({type: types.GAME_CANT_START});
     }
 };
 
@@ -79,10 +69,13 @@ export const fitchGameResults = () => async dispatch => {
 };
 
 
+//TODO: переделать(выводить ошибку)
 export const emitRate = rate => async dispatch => {
-    await socket.emitRate(rate);
+    const {error}  = await socket.emitRate(rate);
+    console.log(error);
 };
 
+//TODO: переделать
 export const wWinner = () => async (dispatch, getState) => {
     const {winnerId, firstUserRate, secondUserRate} = await socket.subscribes().getWinner();
 

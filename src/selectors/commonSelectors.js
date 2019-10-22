@@ -5,6 +5,7 @@ export const getGameMessage = state => state.game.message;
 
 export const getGameHistory = state => state.game.history;
 export const getGameFinish = state => state.game.finish;
+export const getGameCanStart = state => state.game.canStart;
 
 export const getRooms = state => state.session.rooms;
 export const getCurrentRoom = state => state.session.currentRoom;

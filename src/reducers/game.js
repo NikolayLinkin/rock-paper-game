@@ -3,6 +3,7 @@ import * as types from "../constants/ActionsTypes";
 const initialState = {
     gameMode: null,
     finish: false,
+    canStart: false,
     result: null,
     enemyRate: null,
     selectedWeapon: null,
@@ -27,9 +28,24 @@ const game = (state = initialState, action) => {
                 result: action.gameResult,
                 enemyRate: action.enemyRate,
                 playerRate: action.playerRate,
+                canStart: true,
                 finish: true,
             }
         }
+        case types.GAME_CAN_START: {
+            return {
+                ...state,
+                canStart: true,
+            }
+        }
+
+        case types.GAME_CANT_START: {
+            return {
+                ...state,
+                canStart: false,
+            }
+        }
+
         case types.GAME_UPDATE_STATUS: {
             return {
                 ...state,

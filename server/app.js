@@ -90,6 +90,7 @@ io.on('connection', socket => {
         io.to(socket.room).emit('getWinner', {
             ...getWinner(players),
         });
+        room.clearRates();
     };
 
     const roomUpdate = (changes = {}) => {
@@ -114,11 +115,14 @@ io.on('connection', socket => {
 
     const roomLeave = () => {
         const roomName = socket.room;
+        io.to(roomName).emit('checkStatus', {canStart: false});
         socket.leave(roomName);
+
         const room = rooms.getRoom(roomName);
 
         if (room) {
             room.removePlayer(socket.id);
+            room.isOpen = true;
 
             if (room.getPlayersCount() === 0) {
                 rooms.removeRoom(roomName);
@@ -127,6 +131,7 @@ io.on('connection', socket => {
     };
 
 
+    //TODO: подумать как обрабатывать ошибку, если человек вводит имя комнаты, которая уже создана
     socket.on('userJoin', (data, cb) => {
         const {roomName, userName} = data;
         const room = rooms.getRoom(roomName);
@@ -139,7 +144,7 @@ io.on('connection', socket => {
             return;
         }
 
-        if (room && room.getPlayersCount() === 2) {
+        if (room && !room.isOpen) {
             cb({
                 status: "Error",
                 error: "Комната уже полная"
@@ -150,7 +155,13 @@ io.on('connection', socket => {
         userJoin(data);
 
         console.info(`New user join ${userName} in ${roomName}`);
-        cb({status: "ok", message: `Вы подключились к комнате ${roomName}`});
+
+        if(room && room.getPlayersCount() === 2) {
+            room.isOpen = false;
+            io.to(socket.room).emit('checkStatus', {canStart: true});
+        }
+
+        cb({status: "ok", socketId: socket.id});
     });
 
     socket.on('userLeave', (data, cb) => {
@@ -168,6 +179,7 @@ io.on('connection', socket => {
         }
 
         roomUpdate({rate});
+        cb({status: "ok"});
     });
 
 
@@ -186,5 +198,5 @@ io.on('connection', socket => {
  */
 app.route('/api/rooms')
     .get((req, res) => {
-        res.json({rooms: rooms.getRooms()});
+        res.json({rooms: rooms.getOpenRooms()});
     });

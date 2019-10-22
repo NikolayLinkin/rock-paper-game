@@ -22,11 +22,13 @@ class PvP extends Component {
     componentDidMount() {
         const {
             connectToServer,
+            checkGameStatus,
             fetchRooms,
             wWinner,
         } = this.props;
 
         connectToServer();
+        checkGameStatus();
         fetchRooms();
 
         wWinner();
@@ -41,6 +43,16 @@ class PvP extends Component {
         return true;
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {userName} = this.props;
+
+        if (!userName) {
+            console.log(1);
+        } else {
+
+        }
+    }
+
     componentWillUnmount() {
         // this.props.leaveFromServer();
     }
@@ -50,10 +62,18 @@ class PvP extends Component {
         this.setState(state => ({popupIsOpen: !state.popupIsOpen}));
     };
 
-    roomLeave = (roomName) => {
-        roomName = 'my first room';
+    joinInRoom = (roomName) => {
+        let {
+            createRoom,
+            userName,
+        } = this.props;
 
-        this.props.roomLeave(roomName);
+        userName = "Test";
+        if (userName) {
+            createRoom(userName, roomName);
+        } else {
+
+        }
     };
 
     render() {
@@ -66,10 +86,17 @@ class PvP extends Component {
 
         return (
             <div className="wrapper">
+                {roomsList.map(room =>
+                    <div key={room.id} onClick={() => this.joinInRoom(room.name)} className="room-preview">
+                        {room.name}
+                    </div>
+                )}
                 {!roomsList.length ? 'Нет созданных комнат' : JSON.stringify(roomsList)}
                 <button onClick={this.togglePopup}>Создать комнату</button>
                 {popupIsOpen ?
-                    <PopupForm createRoom={createRoom} closePopup={this.togglePopup}/>
+                    <PopupForm createRoom={createRoom}
+                               closePopup={this.togglePopup}
+                    />
                     : ''}
                 {/*{roomsList.map(room =>*/}
                 {/*    <div key={room.id}>*/}

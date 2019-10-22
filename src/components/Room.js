@@ -22,6 +22,8 @@ class Room extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
+        console.log(this.props.canStart);
+
         const {currentRoom} = nextProps;
         if(!currentRoom) {
             this.props.history.push('/pvp');
@@ -49,6 +51,7 @@ class Room extends Component {
             enemyRate,
             playerRate,
             gameResult,
+            canStart,
         } = this.props;
         return (
             <div className="wrapper">
@@ -57,6 +60,7 @@ class Room extends Component {
                 <Weapons applyChoose={emitRate}
                          gameFinish={gameFinish}
                          startNewGame={startNewGame}
+                         canStart={canStart}
                 />
 
                 {gameFinish ?

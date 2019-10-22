@@ -5,22 +5,18 @@ import PvP from "../components/PvP";
 
 import {
     connectToServer,
+    checkGameStatus,
     leaveFromServer,
     fetchRooms,
     createRoom,
-
-    joinInGame,
     emitRate,
+
     wWinner,
 } from "../actions/PvPActions";
 
 import {
     startNewGame,
 } from "../actions/GameActions";
-
-import {
-    loginUser,
-} from "../actions/SessionActions";
 
 import {
     getRooms,
@@ -42,12 +38,10 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
     connectToServer,
+    checkGameStatus,
     leaveFromServer,
     fetchRooms,
     createRoom,
-
-    joinInGame,
-    loginUser,
     emitRate,
     wWinner,
     startNewGame,

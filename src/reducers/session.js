@@ -35,6 +35,8 @@ const session = (state=initialState, action) => {
             return {
                 ...state,
                 currentRoom: action.currentRoom,
+                userName: action.userName,
+                socketId: action.socketId,
             }
         }
 
@@ -42,6 +44,8 @@ const session = (state=initialState, action) => {
             return {
                 ...state,
                 currentRoom: null,
+                socketId: null,
+                userName: null,
             }
         }
 

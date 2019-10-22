@@ -9,6 +9,7 @@ class Weapons extends Component {
         applyChoose: PropTypes.func.isRequired,
         startNewGame: PropTypes.func.isRequired,
         gameFinish: PropTypes.bool.isRequired,
+        canStart: PropTypes.bool.isRequired,
     };
 
     constructor(props) {
@@ -49,7 +50,7 @@ class Weapons extends Component {
 
     render() {
         const {error} = this.state;
-        const {gameFinish} = this.props;
+        const {gameFinish, canStart} = this.props;
 
         return (
             <form onSubmit={this.handleSubmit}>
@@ -59,12 +60,17 @@ class Weapons extends Component {
                     <WeaponItem chooseWeapon={this.chooseWeapon} name={'scissors'}/>
                     <WeaponItem chooseWeapon={this.chooseWeapon} name={'paper'}/>
                 </div>
+
+                <div style={{margin: '50px'}}>
+                    {!canStart ? 'Ожидание других игроков' : ''}
+                </div>
+
                 {gameFinish ?
                     <button onClick={this.startNewGame} className="weapons__btn">
                         Начать новую игру
                     </button>
                     :
-                    <button type="submit" className="weapons__btn">
+                    <button type="submit" className="weapons__btn" disabled={!canStart}>
                         Подтвердить выбор
                     </button>
                 }
