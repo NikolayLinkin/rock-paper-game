@@ -36,8 +36,12 @@ export const joinInGame = (name, room) => async dispatch => {
     }
 };
 
-export const leaveFromRoom = () => async dispatch => {
+export const leaveFromRoom = (roomName) => async (dispatch, getState) => {
+    const state = getState();
+    const currentRoom = state.session;
 
+    await socket.userLeave(currentRoom);
+    dispatch({type: types.ROOM_JOIN, currentRoom: null});
 };
 
 export const fetchRooms = () => async dispatch => {
@@ -61,6 +65,7 @@ export const createRoom = (userName, roomName) => async dispatch => {
     if(error) {
         dispatch(createRoomError(error));
     } else {
+        dispatch({type: types.ROOM_JOIN, currentRoom: roomName});
         dispatch({type: types.GAME_UPDATE_STATUS, message});
     }
 };

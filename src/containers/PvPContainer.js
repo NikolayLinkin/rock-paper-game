@@ -25,10 +25,6 @@ import {
 import {
     getRooms,
     getCurrentRoom,
-    getGameFinish,
-    getEnemyRate,
-    getPlayerRate,
-    getGameResult,
     getUserName,
     getGameMessage,
 } from "../selectors/commonSelectors";
@@ -39,10 +35,6 @@ const mapStateToProps = state => {
     return {
         roomsList: getRooms(state),
         currentRoom: getCurrentRoom(state),
-        enemyRate: getEnemyRate(state),
-        playerRate: getPlayerRate(state),
-        gameResult: getGameResult(state),
-        gameFinish: getGameFinish(state),
         userName: getUserName(state),
         gameMessage: getGameMessage(state),
     }

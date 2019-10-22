@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import WeaponItem from "./WeaponsItem";
-import classNames from "classnames";
+// import classNames from "classnames";
 
 class Weapons extends Component {
     static propTypes = {

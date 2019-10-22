@@ -1,8 +1,46 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 import Weapons from "./Weapons";
 import GameResult from "./GameResult";
+import {withRouter} from "react-router-dom";
 
 class Room extends Component {
+    static propTypes = {
+        leaveFromRoom: PropTypes.func.isRequired,
+        emitRate: PropTypes.func.isRequired,
+        gameFinish: PropTypes.bool.isRequired,
+        startNewGame: PropTypes.func.isRequired,
+        enemyRate: PropTypes.string,
+        playerRate: PropTypes.string,
+        gameResult: PropTypes.string,
+    };
+
+    componentDidMount() {
+        if(!this.props.currentRoom) {
+            this.props.history.push('/pvp');
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        const {currentRoom} = nextProps;
+        if(!currentRoom) {
+            this.props.history.push('/pvp');
+            return false;
+        }
+
+        return true;
+    }
+
+    componentWillUnmount() {
+        this.props.leaveFromRoom();
+    }
+
+    leave = (e) => {
+        e.preventDefault();
+
+        this.props.leaveFromRoom();
+    };
+
     render () {
         const {
             emitRate,
@@ -14,6 +52,7 @@ class Room extends Component {
         } = this.props;
         return (
             <div className="wrapper">
+                <button onClick={this.leave}>Выйти из комнаты</button>
 
                 <Weapons applyChoose={emitRate}
                          gameFinish={gameFinish}
@@ -31,4 +70,4 @@ class Room extends Component {
     }
 }
 
-export default Room;
+export default withRouter(Room);

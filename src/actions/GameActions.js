@@ -20,7 +20,7 @@ export const startNewGame = () => dispatch => {
     dispatch({type: types.GAME_START});
 };
 
-const updateGameHistory = (lastGameResult) => ({
-    type: types.UPDATE_GAME_HISTORY,
-    lastGameResult,
-});
+// const updateGameHistory = (lastGameResult) => ({
+//     type: types.UPDATE_GAME_HISTORY,
+//     lastGameResult,
+// });

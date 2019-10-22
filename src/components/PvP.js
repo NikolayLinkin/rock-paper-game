@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import {withRouter} from "react-router-dom";
 
 import PopupForm from "./PopupForm";
 
@@ -31,8 +32,17 @@ class PvP extends Component {
         wWinner();
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        const {currentRoom} = nextProps;
+        if (currentRoom) {
+            this.props.history.push(`/pvp/rooms/${currentRoom}`);
+            return false;
+        }
+        return true;
+    }
+
     componentWillUnmount() {
-        this.props.leaveFromServer();
+        // this.props.leaveFromServer();
     }
 
     togglePopup = (e) => {
@@ -71,4 +81,4 @@ class PvP extends Component {
     }
 }
 
-export default PvP;
+export default withRouter(PvP);

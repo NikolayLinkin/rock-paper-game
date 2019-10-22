@@ -85,10 +85,6 @@ class Rooms {
     getScore(userName) {
 
     }
-
-    removeRoom(roomName) {
-        delete this.rooms[roomName];
-    }
 }
 
 

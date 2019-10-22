@@ -69,6 +69,7 @@ export const disconnect = () => {socket.disconnect(); socket = null;};
  */
 export const userJoin = (userName, roomName) => emitApi('userJoin', {userName, roomName});
 
+export const userLeave = roomName => emitApi('userLeave', {roomName});
 
 /**
  * отправка ставки на сервер

@@ -154,7 +154,9 @@ io.on('connection', socket => {
     });
 
     socket.on('userLeave', (data, cb) => {
+        console.log(`userLeave ${socket.id}`);
         roomLeave();
+        cb({});
     });
 
     socket.on('userRate', (data, cb) => {
