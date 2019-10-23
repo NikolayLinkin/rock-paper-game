@@ -1,4 +1,4 @@
-import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
 
 /**
  * emit события
@@ -9,7 +9,7 @@ import socketIOClient from "socket.io-client";
 const emitApi = (event, data) => {
       return new Promise((resolve, reject) => {
          if(!socket) {
-             reject('No socket connection');
+             reject('No socketApi connection');
          }
 
          socket.emit(event, data, (res) => {
@@ -30,7 +30,7 @@ const emitApi = (event, data) => {
 const onApi = event => {
     return new Promise((resolve, reject) => {
         if(!socket) {
-            reject('No socket connection');
+            reject('No socketApi connection');
         }
 
         socket.on(event, res => {
@@ -48,9 +48,9 @@ let socket = null;
 const endpoint = "http://localhost:3005";
 
 export const connect = () => {
-    socket = socketIOClient(endpoint);
+    socket = io.connect(endpoint);
 
-    subscribes(socket);
+    return socket;
 };
 
 export const subscribes = () => {

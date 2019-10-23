@@ -20,43 +20,41 @@ server.listen(port, () => {
     console.log(`Server has started on port ${port}`);
 });
 
-function getWinner(users) {
+function getWinner(players) {
     const PAPER = "paper";
     const SCISSORS = "scissors";
     const ROCK = "rock";
 
 
-    const firstUser = users[0];
-    const secondUser = users[1];
+    const firstPlayer = players[0];
+    const secondPlayer = players[1];
 
-    const firstUserRate = firstUser.rate;
-    const secondUserRate = secondUser.rate;
 
-    if (firstUserRate === secondUserRate) {
-        return {
-            winnerId: 0,
-            firstUserRate: firstUserRate,
-            secondUserRate: secondUserRate,
-        };
+    const firstRate = firstPlayer.rate;
+    const secondRate = secondPlayer.rate;
+
+    const result = {
+        rates: {
+            [firstPlayer.id]: firstRate,
+            [secondPlayer.id]: secondRate,
+        },
+    };
+
+    if (firstRate === secondRate) {
+        result.draw = true;
     }
 
     if (
-        (firstUserRate === PAPER && secondUserRate === ROCK) ||
-        (firstUserRate === SCISSORS && secondUserRate === PAPER) ||
-        (firstUserRate === ROCK && secondUserRate === SCISSORS)
+        (firstRate === PAPER && secondRate === ROCK) ||
+        (firstRate === SCISSORS && secondRate === PAPER) ||
+        (firstRate === ROCK && secondRate === SCISSORS)
     ) {
-        return {
-            winnerId: firstUser.id,
-            firstUserRate: firstUserRate,
-            secondUserRate: secondUserRate
-        };
+        result.winnerId = firstPlayer.id
     }
 
-    return {
-        winnerId: secondUser.id,
-        firstUserRate: firstUserRate,
-        secondUserRate: secondUserRate,
-    };
+    result.winnerId = secondPlayer.id;
+
+    return result;
 }
 
 // const rooms = ['123', 'my room'];
@@ -87,9 +85,7 @@ io.on('connection', socket => {
             }
         }
 
-        io.to(socket.room).emit('getWinner', {
-            ...getWinner(players),
-        });
+        io.to(socket.room).emit('getWinner', getWinner(players));
         room.clearRates();
     };
 
@@ -156,7 +152,7 @@ io.on('connection', socket => {
 
         console.info(`New user join ${userName} in ${roomName}`);
 
-        if(room && room.getPlayersCount() === 2) {
+        if (room && room.getPlayersCount() === 2) {
             room.isOpen = false;
             io.to(socket.room).emit('checkStatus', {canStart: true});
         }

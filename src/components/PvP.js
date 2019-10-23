@@ -24,14 +24,11 @@ class PvP extends Component {
             connectToServer,
             checkGameStatus,
             fetchRooms,
-            wWinner,
         } = this.props;
 
         connectToServer();
         checkGameStatus();
         fetchRooms();
-
-        wWinner();
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {

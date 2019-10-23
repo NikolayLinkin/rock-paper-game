@@ -5,7 +5,6 @@ import Room from "../components/Room";
 import {
     leaveFromRoom,
     emitRate,
-    checkGameStatus,
 } from "../actions/PvPActions";
 
 import {
@@ -39,5 +38,4 @@ export default connect(mapStateToProps, {
     leaveFromRoom,
     emitRate,
     startNewGame,
-    checkGameStatus,
 })(RoomContainer);

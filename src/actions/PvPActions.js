@@ -8,11 +8,45 @@ export const userConnect = (userName) => dispatch => {
 
 };
 
-export const connectToServer = () => async dispatch => {
-    await socket.connect();
+export const connectToServer = () => async (dispatch, getState) => {
+    const socketApi = await socket.connect();
+
+    socketApi.on('checkStatus', res => {
+        const {canStart} = res;
+
+        if(canStart) {
+            dispatch({type: types.GAME_CAN_START});
+        } else {
+            dispatch({type: types.GAME_CANT_START});
+        }
+    });
+
+    //TODO: принимаем id победителя и ставки вида {[id]: "ставка"}
+    socketApi.on('getWinner', res => {
+        const {winnerId, rates, draw} = res;
+
+        const state = getState();
+        const socketId = state.session.socketId;
+
+        if(draw) {
+
+        }
+
+        if(winnerId === socketId) {
+
+        } else {
+
+        }
+
+        //TODO: сделать 3 события GAME_DRAW, GAME_LOSE, GAME_WIN,
+
+        // dispatch({type: types.GAME_FINISH, gameResult, enemyRate, playerRate,});
+    });
+
 };
 export const leaveFromServer = () => async dispatch => {
     await socket.disconnect();
+    dispatch({type: types.ROOM_LEAVE, currentRoom: null});
 };
 
 export const leaveFromRoom = (roomName) => async (dispatch, getState) => {
@@ -48,49 +82,11 @@ export const createRoom = (userName, roomName) => async dispatch => {
     }
 };
 
-export const checkGameStatus = () => async dispatch => {
-    const {canStart} = await socket.subscribes().checkStatus();
-
-    console.log(canStart);
-
-    if(canStart) {
-        dispatch({type: types.GAME_CAN_START});
-    } else {
-        dispatch({type: types.GAME_CANT_START});
-    }
-};
-
-export const joinInRoom = roomName => async dispatch => {
-
-};
-
-export const fitchGameResults = () => async dispatch => {
-
-};
-
 
 //TODO: переделать(выводить ошибку)
 export const emitRate = rate => async dispatch => {
     const {error}  = await socket.emitRate(rate);
     console.log(error);
-};
-
-//TODO: переделать
-export const wWinner = () => async (dispatch, getState) => {
-    const {winnerId, firstUserRate, secondUserRate} = await socket.subscribes().getWinner();
-
-    const state = getState();
-    const socketId = state.session.socketId;
-    let gameResult = 'lose';
-
-    if(winnerId === socketId) {
-        gameResult = "win";
-    }
-    if(winnerId === 0) {
-        gameResult = 'draw';
-    }
-
-    dispatch({type: types.GAME_FINISH, gameResult, enemyRate: secondUserRate, playerRate: firstUserRate});
 };
 
 // export const createRoom = (roomName, userName) => async dispatch => {
