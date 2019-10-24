@@ -22,8 +22,6 @@ class Room extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        console.log(this.props.canStart);
-
         const {currentRoom} = nextProps;
         if(!currentRoom) {
             this.props.history.push('/pvp');
@@ -40,7 +38,7 @@ class Room extends Component {
     leave = (e) => {
         e.preventDefault();
 
-        this.props.leaveFromRoom();
+        this.props.history.push('/pvp');
     };
 
     render () {

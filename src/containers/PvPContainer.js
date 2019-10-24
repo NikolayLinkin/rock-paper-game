@@ -7,8 +7,9 @@ import {
     connectToServer,
     leaveFromServer,
     fetchRooms,
-    createRoom,
+    joinInRoom,
     emitRate,
+    login,
 } from "../actions/PvPActions";
 
 import {
@@ -37,7 +38,8 @@ export default connect(mapStateToProps, {
     connectToServer,
     leaveFromServer,
     fetchRooms,
-    createRoom,
+    joinInRoom,
     emitRate,
     startNewGame,
+    login,
 })(PvPContainer);

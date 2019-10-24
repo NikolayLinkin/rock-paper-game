@@ -91,7 +91,7 @@ const createRoomError = error => ({
  * @param roomName {string} название комнаты
  * @returns {Function}
  */
-export const createRoom = (userName, roomName) => async dispatch => {
+export const joinInRoom = (userName="test", roomName) => async dispatch => {
     const {error, socketId} = await socket.userJoin(userName, roomName);
 
     if (error) {
@@ -102,6 +102,11 @@ export const createRoom = (userName, roomName) => async dispatch => {
     }
 };
 
+export const login = (userName) => ({
+    type: types.SAVE_USER_NAME,
+    userName,
+});
+
 
 //TODO: переделать(выводить ошибку)
 export const emitRate = rate => async dispatch => {
@@ -109,9 +114,9 @@ export const emitRate = rate => async dispatch => {
     console.log(error);
 };
 
-// export const createRoom = (roomName, userName) => async dispatch => {
+// export const joinInRoom = (roomName, userName) => async dispatch => {
 //     if (roomName) {
-//         const userId = await api.createRoom(roomName, userName);
+//         const userId = await api.joinInRoom(roomName, userName);
 //
 //         // dispatch({type: types.SET_USER, userId});
 //         dispatch({type: types.ROOM_JOIN, currentRoom: roomName});

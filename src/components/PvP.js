@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 
-import PopupForm from "./PopupForm";
+import PopupCreateRoom from "./popups/PopupCreateRoom";
+import PopupLogin from "./popups/PopupLogin";
 
 class PvP extends Component {
     static propTypes = {
@@ -15,7 +16,7 @@ class PvP extends Component {
         super(props);
 
         this.state = {
-            popupIsOpen: false,
+            openPopupName: false,
         };
     }
 
@@ -38,46 +39,35 @@ class PvP extends Component {
         return true;
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const {userName} = this.props;
+    togglePopup = (popupName) => {
+        this.setState(state => ({openPopupName: popupName}));
+    };
 
-        if (!userName) {
-            console.log(1);
-        } else {
-
-        }
-    }
-
-    componentWillUnmount() {
-        // this.props.leaveFromServer();
-    }
-
-    togglePopup = (e) => {
-        e.preventDefault();
-        this.setState(state => ({popupIsOpen: !state.popupIsOpen}));
+    closePopup = () => {
+        this.togglePopup("none");
     };
 
     joinInRoom = (roomName) => {
-        let {
-            createRoom,
+        const {
+            joinInRoom,
             userName,
         } = this.props;
 
-        userName = "Test";
         if (userName) {
-            createRoom(userName, roomName);
+            joinInRoom(userName, roomName);
         } else {
-
+            this.togglePopup('login');
         }
     };
 
     render() {
         const {
             roomsList,
-            createRoom,
+            joinInRoom,
+            login,
         } = this.props;
 
-        const {popupIsOpen} = this.state;
+        const {openPopupName} = this.state;
 
         return (
             <div className="wrapper">
@@ -87,12 +77,19 @@ class PvP extends Component {
                     </div>
                 )}
                 {!roomsList.length ? 'Нет созданных комнат' : JSON.stringify(roomsList)}
-                <button onClick={this.togglePopup}>Создать комнату</button>
-                {popupIsOpen ?
-                    <PopupForm createRoom={createRoom}
-                               closePopup={this.togglePopup}
-                    />
-                    : ''}
+                <button onClick={() => {this.togglePopup('create-room')}}>Создать комнату</button>
+                {openPopupName === "create-room" ?
+                    <PopupCreateRoom joinInRoom={joinInRoom}
+                                     closePopup={this.closePopup}
+                    /> : ''}
+
+                {openPopupName === "login" ?
+                    <PopupLogin joinInRoom={joinInRoom}
+                                login={login}
+                                closePopup={this.closePopup}
+                    /> : ''}
+
+
                 {/*{roomsList.map(room =>*/}
                 {/*    <div key={room.id}>*/}
                 {/*        {JSON.stringify(room)}*/}

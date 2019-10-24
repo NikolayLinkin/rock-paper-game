@@ -1,39 +1,36 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import {joinInRoom} from "../../actions/PvPActions";
 
-class PopupForm extends Component {
+class PopupLogin extends Component {
     static propTypes = {
-        createRoom: PropTypes.func.isRequired,
+        joinInRoom: PropTypes.func.isRequired,
         closePopup: PropTypes.func.isRequired,
     };
 
     constructor(props) {
         super(props);
-
         this.userName = React.createRef();
-        this.roomName = React.createRef();
 
         this.state = {
             error: '',
-            needRoomName: false,
         };
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const {createRoom} = this.props;
         const userName = this.userName.current.value;
-        const roomName = this.roomName.current.value;
+        const {login, closePopup} = this.props;
 
-        if (!userName.length || !roomName.length) {
+        if (!userName.length) {
             this.setState(state => ({error: 'Заполните все поля формы'}));
             return false;
         }
 
-        createRoom(userName, roomName);
+        login(userName);
+        closePopup();
 
         this.userName.current.value = '';
-        this.roomName.current.value = '';
     };
 
     render() {
@@ -51,11 +48,6 @@ class PopupForm extends Component {
                             <input ref={this.userName} type="text"/>
                         </div>
 
-                        <div>
-                            <label>Введите название комнаты</label>
-                            <input ref={this.roomName} type="text"/>
-                        </div>
-
                         <button>Подтвердить</button>
                         <button onClick={closePopup}>
                             Отмена
@@ -67,4 +59,4 @@ class PopupForm extends Component {
     }
 }
 
-export default PopupForm;
+export default PopupLogin;
