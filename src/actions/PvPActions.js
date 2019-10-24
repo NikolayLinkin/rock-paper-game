@@ -8,39 +8,59 @@ export const userConnect = (userName) => dispatch => {
 
 };
 
+const gameWinnerSuccess = (gameResult, enemyRate, playerRate) => ({
+    type: types.GAME_FINISH,
+    gameResult,
+    enemyRate,
+    playerRate,
+});
+
 export const connectToServer = () => async (dispatch, getState) => {
     const socketApi = await socket.connect();
 
     socketApi.on('checkStatus', res => {
         const {canStart} = res;
 
-        if(canStart) {
+        if (canStart) {
             dispatch({type: types.GAME_CAN_START});
         } else {
             dispatch({type: types.GAME_CANT_START});
         }
     });
 
-    //TODO: принимаем id победителя и ставки вида {[id]: "ставка"}
+    /**
+     * res = {winnerId, rates, draw}
+     */
     socketApi.on('getWinner', res => {
         const {winnerId, rates, draw} = res;
 
         const state = getState();
         const socketId = state.session.socketId;
 
-        if(draw) {
+        let gameResult = null,
+            enemyRate = null,
+            playerRate = null;
 
+        for(let rate in rates) {
+            if(rates.hasOwnProperty(rate)) {
+                if( rate === socketId) {
+                    playerRate = rates[rate];
+                } else{
+                    enemyRate = rates[rate];
+                }
+            }
         }
 
-        if(winnerId === socketId) {
-
+        if (draw) {
+            gameResult = "draw";
+        } else if (winnerId === socketId) {
+            gameResult = "win";
         } else {
-
+            gameResult = "lose";
         }
 
         //TODO: сделать 3 события GAME_DRAW, GAME_LOSE, GAME_WIN,
-
-        // dispatch({type: types.GAME_FINISH, gameResult, enemyRate, playerRate,});
+        dispatch(gameWinnerSuccess(gameResult, enemyRate, playerRate));
     });
 
 };
@@ -74,7 +94,7 @@ const createRoomError = error => ({
 export const createRoom = (userName, roomName) => async dispatch => {
     const {error, socketId} = await socket.userJoin(userName, roomName);
 
-    if(error) {
+    if (error) {
         dispatch(createRoomError(error));
     } else {
         dispatch({type: types.ROOM_JOIN, currentRoom: roomName, userName, socketId,});
@@ -85,7 +105,7 @@ export const createRoom = (userName, roomName) => async dispatch => {
 
 //TODO: переделать(выводить ошибку)
 export const emitRate = rate => async dispatch => {
-    const {error}  = await socket.emitRate(rate);
+    const {error} = await socket.emitRate(rate);
     console.log(error);
 };
 
