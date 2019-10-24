@@ -13,4 +13,5 @@ export const SAVE_USER_NAME = "SAVE_USER_NAME";
 export const FETCH_ROOMS = "FETCH_ROOMS";
 
 export const ROOM_JOIN = "ROOM_JOIN";
+export const ROOM_JOIN_ERROR = "ROOM_JOIN__ERROR";
 export const ROOM_LEAVE = "ROOM_LEAVE";

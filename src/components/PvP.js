@@ -30,9 +30,13 @@ class PvP extends Component {
         fetchRooms();
     }
 
+    componentDidUpdate() {
+
+    }
+
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        const {currentRoom} = nextProps;
-        if (currentRoom) {
+        const {currentRoom, userName} = nextProps;
+        if (currentRoom && userName) {
             this.props.history.push(`/pvp/rooms/${currentRoom}`);
             return false;
         }
@@ -51,7 +55,13 @@ class PvP extends Component {
         const {
             joinInRoom,
             userName,
+            sessionErrText,
         } = this.props;
+
+        //TODO: додумать логику
+        if(sessionErrText) {
+            this.togglePopup('login');
+        }
 
         if (userName) {
             joinInRoom(userName, roomName);
@@ -65,6 +75,7 @@ class PvP extends Component {
             roomsList,
             joinInRoom,
             login,
+            sessionErrText,
         } = this.props;
 
         const {openPopupName} = this.state;
@@ -86,6 +97,7 @@ class PvP extends Component {
                 {openPopupName === "login" ?
                     <PopupLogin joinInRoom={joinInRoom}
                                 login={login}
+                                errorText={sessionErrText}
                                 closePopup={this.closePopup}
                     /> : ''}
 

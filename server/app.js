@@ -140,12 +140,23 @@ io.on('connection', socket => {
             return;
         }
 
-        if (room && !room.isOpen) {
-            cb({
-                status: "Error",
-                error: "Комната уже полная"
-            });
-            return false;
+        if(room) {
+            const players = room.getPlayersArray();
+            if (players.find(player => player.name === userName)) {
+                cb({
+                    status: "Error",
+                    error: "Игрок с таким именем уже находится в комнате",
+                });
+                return false;
+            }
+
+            if(!room.isOpen) {
+                cb({
+                    status: "Error",
+                    error: "Комната уже полная"
+                });
+                return false;
+            }
         }
 
         userJoin(data);

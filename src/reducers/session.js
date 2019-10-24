@@ -5,6 +5,8 @@ const initialState = {
     rooms: [],
     currentRoom: null,
     userName: null,
+    errStatus: null,
+    errText: null,
 };
 
 const session = (state=initialState, action) => {
@@ -37,6 +39,14 @@ const session = (state=initialState, action) => {
                 currentRoom: action.currentRoom,
                 userName: action.userName,
                 socketId: action.socketId,
+            }
+        }
+
+        case types.ROOM_JOIN_ERROR: {
+            return {
+                ...state,
+                errText: action.errText,
+                errStatus: action.errStatus,
             }
         }
 

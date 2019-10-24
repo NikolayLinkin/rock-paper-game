@@ -79,8 +79,10 @@ export const fetchRooms = () => async dispatch => {
     dispatch({type: FETCH_ROOMS, rooms});
 };
 
-const createRoomError = error => ({
-    error,
+const joinInRoomError = (errText, errStatus) => ({
+    type: types.ROOM_JOIN_ERROR,
+    errText,
+    errStatus,
 });
 
 //TODO: подумать как лучше проверять ограничение создания 2х комнат с одиноковым именем,
@@ -91,14 +93,12 @@ const createRoomError = error => ({
  * @param roomName {string} название комнаты
  * @returns {Function}
  */
-export const joinInRoom = (userName="test", roomName) => async dispatch => {
-    const {error, socketId} = await socket.userJoin(userName, roomName);
-
-    if (error) {
-        dispatch(createRoomError(error));
-    } else {
+export const joinInRoom = (userName, roomName) => async dispatch => {
+    try {
+        const {socketId} = await socket.userJoin(userName, roomName);
         dispatch({type: types.ROOM_JOIN, currentRoom: roomName, userName, socketId,});
-        // dispatch({type: types.GAME_UPDATE_STATUS, message});
+    } catch (error) {
+        dispatch(joinInRoomError(error));
     }
 };
 

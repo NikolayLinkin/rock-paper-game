@@ -33,6 +33,18 @@ class Room {
         return this.players;
     }
 
+    getPlayersArray() {
+        const result = [];
+
+        for(let player in this.players) {
+            if(this.players.hasOwnProperty(player)) {
+                result.push(this.players[player]);
+            }
+        }
+
+        return result;
+    }
+
     setRate(playerId, rate) {
         this.players[playerId].rate = rate;
         this.rates.push(rate);

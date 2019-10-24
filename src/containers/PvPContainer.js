@@ -21,6 +21,8 @@ import {
     getCurrentRoom,
     getUserName,
     getGameMessage,
+    getSessionErrorText,
+    getSessionErrorStatus,
 } from "../selectors/commonSelectors";
 
 const PvPContainer = props => <PvP {...props}/>;
@@ -31,6 +33,8 @@ const mapStateToProps = state => {
         currentRoom: getCurrentRoom(state),
         userName: getUserName(state),
         gameMessage: getGameMessage(state),
+        sessionErrText: getSessionErrorText(state),
+        sessionErrStatus: getSessionErrorStatus(state),
     }
 };
 

@@ -35,13 +35,14 @@ class PopupLogin extends Component {
 
     render() {
         const {error} = this.state;
-        const {closePopup} = this.props;
+        const {closePopup, errorText} = this.props;
 
         return (
             <div className="popup">
                 <div className="popup__inner">
                     <form onSubmit={this.handleSubmit}>
                         {error ? <div style={{color: 'red'}}>{error}</div> : ''}
+                        {errorText ? <div style={{color: 'red'}}>{errorText}</div> : ''}
 
                         <div>
                             <label>Введите имя</label>
