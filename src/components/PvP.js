@@ -6,6 +6,8 @@ import RoomsList from "./RoomsList";
 import PopupCreateRoom from "./popups/PopupCreateRoom";
 import PopupLogin from "./popups/PopupLogin";
 
+//TODO: Вынести попапы
+
 class PvP extends Component {
     static propTypes = {
         connectToServer: PropTypes.func.isRequired,
@@ -56,7 +58,6 @@ class PvP extends Component {
             sessionErrStatus,
         } = this.props;
 
-        //TODO: додумать логику ошибки
         if (sessionErrStatus === "Error") {
             this.togglePopup('login');
         }
@@ -86,10 +87,11 @@ class PvP extends Component {
         return (
             <div className="wrapper">
                 {!roomsList.length ?
-                    'Нет созданных комнат' :
+                    <div className="rooms--empty">Нет свободных комнат</div> :
                     <RoomsList rooms={roomsList} joinInRoom={this.joinInRoom}/>
                 }
-                <button onClick={() => {this.togglePopup('create-room')}}>
+                <button className="rooms__create-btn"
+                        onClick={() => {this.togglePopup('create-room')}}>
                     Создать комнату
                 </button>
 

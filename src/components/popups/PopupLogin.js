@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {joinInRoom} from "../../actions/PvPActions";
 
 class PopupLogin extends Component {
     static propTypes = {
@@ -29,7 +28,7 @@ class PopupLogin extends Component {
         } = this.props;
 
         if (!userName.length) {
-            this.setState(state => ({error: 'Заполните все поля формы'}));
+            this.setState(state => ({error: 'Заполните имя'}));
             return false;
         }
 
@@ -51,16 +50,18 @@ class PopupLogin extends Component {
             <div className="popup">
                 <div className="popup__inner">
                     <form onSubmit={this.handleSubmit}>
-                        {error ? <div style={{color: 'red'}}>{error}</div> : ''}
-                        {errorText ? <div style={{color: 'red'}}>{errorText}</div> : ''}
+                        {error ? <div className="popup__error">{error}</div> : ''}
+                        {errorText ? <div className="popup__error">{errorText}</div> : ''}
 
-                        <div>
-                            <label>Введите имя</label>
-                            <input ref={this.userName} type="text"/>
-                        </div>
+                        <input className="popup__input"
+                               placeholder="Имя игрока"
+                               ref={this.userName} type="text"/>
 
-                        <button>Подтвердить</button>
-                        <button onClick={closePopup}>
+                        <button className="popup__btn">
+                            Подтвердить
+                        </button>
+                        <button className="popup__btn popup__btn--close"
+                                onClick={closePopup}>
                             Отмена
                         </button>
                     </form>

@@ -13,6 +13,7 @@ class Room extends Component {
         enemyRate: PropTypes.string,
         playerRate: PropTypes.string,
         gameResult: PropTypes.string,
+        currentRoom: PropTypes.string.isRequired,
     };
 
     componentDidMount() {
@@ -50,10 +51,17 @@ class Room extends Component {
             playerRate,
             gameResult,
             canStart,
+            currentRoom,
         } = this.props;
         return (
             <div className="wrapper">
-                <button onClick={this.leave}>Выйти из комнаты</button>
+                <h2 className="room__title">
+                    Комната {currentRoom}
+                </h2>
+                <button className="room__leave-btn"
+                        onClick={this.leave}>
+                    Выйти из комнаты
+                </button>
 
                 <Weapons applyChoose={emitRate}
                          gameFinish={gameFinish}
@@ -61,11 +69,10 @@ class Room extends Component {
                          canStart={canStart}
                 />
 
-                {gameFinish ?
-                    <GameResult enemyRate={enemyRate}
-                                playerRate={playerRate}
-                                gameResult={gameResult}
-                    /> : ""}
+                <GameResult enemyRate={enemyRate}
+                            playerRate={playerRate}
+                            gameResult={gameResult}
+                />
 
             </div>
         )

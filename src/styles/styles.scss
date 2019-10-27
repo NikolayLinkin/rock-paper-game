@@ -1,5 +1,7 @@
 @import "./main/index";
 @import "./weapons/index";
+@import "rooms/index";
+@import "./popups";
 
 .game-mode__btns {
   display: flex;

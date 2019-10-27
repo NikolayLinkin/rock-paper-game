@@ -1,0 +1,46 @@
+.rooms--empty {
+  font-size: 20px;
+  color: #ff9979;
+  text-align: center;
+}
+
+.rooms__create-btn {
+  display: block;
+  width: 300px;
+  height: 50px;
+  background: #7db8ff;
+  color: #fff;
+  margin: 50px auto 0;
+}
+
+.room-preview {
+  border: 1px solid #e6e6e6;
+  width: 100%;
+  margin: 20px auto;
+  cursor: pointer;
+  padding: 10px;
+  transition: border-color, .2s;
+
+  &:hover {
+    border-color: #000;
+  }
+}
+
+.room__leave-btn {
+  width: 220px;
+  height: 40px;
+  margin: 20px 0;
+  background: #cbece2;
+}
+
+.result {
+  color: #faff5b;
+
+  &--win {
+    color: #1bde47;
+  }
+
+  &--lose {
+    color: red;
+  }
+}

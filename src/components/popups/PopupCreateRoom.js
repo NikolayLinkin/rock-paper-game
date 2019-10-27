@@ -42,26 +42,25 @@ class PopupCreateRoom extends Component {
 
         return (
             <div className="popup">
-                <div className="popup__inner">
-                    <form onSubmit={this.handleSubmit}>
-                        {error ? <div style={{color: 'red'}}>{error}</div> : ''}
+                <form onSubmit={this.handleSubmit}>
+                    {error ? <div className="popup__error">{error}</div> : ''}
 
-                        <div>
-                            <label>Введите имя</label>
-                            <input ref={this.userName} type="text"/>
-                        </div>
+                    <input className="popup__input"
+                           placeholder="Имя игрока"
+                           ref={this.userName} type="text"/>
 
-                        <div>
-                            <label>Введите название комнаты</label>
-                            <input ref={this.roomName} type="text"/>
-                        </div>
+                    <input className="popup__input"
+                           placeholder="Название комнаты"
+                           ref={this.roomName} type="text"/>
 
-                        <button>Подтвердить</button>
-                        <button onClick={closePopup}>
-                            Отмена
-                        </button>
-                    </form>
-                </div>
+                    <button className="popup__btn">
+                        Подтвердить
+                    </button>
+                    <button onClick={closePopup}
+                            className="popup__btn popup__btn--close">
+                        Отмена
+                    </button>
+                </form>
             </div>
         )
     }
