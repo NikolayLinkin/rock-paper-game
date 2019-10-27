@@ -69,7 +69,7 @@ export const leaveFromServer = () => async dispatch => {
     dispatch({type: types.ROOM_LEAVE, currentRoom: null});
 };
 
-export const leaveFromRoom = (roomName) => async (dispatch, getState) => {
+export const leaveFromRoom = () => async dispatch => {
     await socket.userLeave();
     dispatch({type: types.ROOM_LEAVE, currentRoom: null});
 };
@@ -119,21 +119,8 @@ export const login = (userName) => ({
 //TODO: переделать(выводить ошибку)
 export const emitRate = rate => async dispatch => {
     const {error} = await socket.emitRate(rate);
-    console.log(error);
+
+    if(error) {
+        console.log(error);
+    }
 };
-
-// export const joinInRoom = (roomName, userName) => async dispatch => {
-//     if (roomName) {
-//         const userId = await api.joinInRoom(roomName, userName);
-//
-//         // dispatch({type: types.SET_USER, userId});
-//         dispatch({type: types.ROOM_JOIN, currentRoom: roomName});
-//         dispatch(fetchRooms());
-//     }
-// };
-
-// export const fetchRooms = () => async dispatch => {
-//     const rooms = await api.getAllRooms();
-//
-//     dispatch({type: types.FETCH_ROOMS_LIST, rooms});
-// };

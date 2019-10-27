@@ -11,10 +11,10 @@ class Room {
 
     addPlayer({id, name}) {
         this.players[id] = {
-            score: 0,
             name,
             rate: false,
             id,
+            ready: true,
         };
         this.playersCount++;
     }
@@ -48,6 +48,10 @@ class Room {
         this.players[playerId].rate = rate;
     }
 
+    setReady(playerId) {
+        this.players[playerId].ready = true;
+    }
+
     getRates() {
         const rates = [];
         for(let player in this.players) {
@@ -63,7 +67,18 @@ class Room {
     clearRates() {
         for(let player in this.players) {
             this.players[player].rate = "";
+            this.players[player].ready = false;
         }
+    }
+
+    allPlayersReady() {
+        for(let player in this.players) {
+            if(this.players[player].ready === false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 

@@ -13,7 +13,7 @@ class Room extends Component {
         enemyRate: PropTypes.string,
         playerRate: PropTypes.string,
         gameResult: PropTypes.string,
-        currentRoom: PropTypes.string.isRequired,
+        currentRoom: PropTypes.string,
     };
 
     componentDidMount() {

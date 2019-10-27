@@ -26,28 +26,6 @@ const emitApi = (event, data) => {
       });
 };
 
-/**
- * подписка на событие
- * @param event {string}
- * @returns {Promise<>}
- */
-const onApi = event => {
-    return new Promise((resolve, reject) => {
-        if(!socket) {
-            reject('No socketApi connection');
-        }
-
-        socket.on(event, res => {
-            if(res.error) {
-                reject(res.error);
-            }
-            console.log(res);
-
-            resolve(res);
-        })
-    });
-};
-
 let socket = null;
 const endpoint = "http://localhost:3005";
 
@@ -55,15 +33,6 @@ export const connect = () => {
     socket = io.connect(endpoint);
 
     return socket;
-};
-
-export const subscribes = () => {
-    return {
-        getWinner() {
-            return onApi('getWinner');
-        },
-        checkStatus() {return onApi('checkStatus')},
-    };
 };
 
 export const disconnect = () => {socket.disconnect(); socket = null;};
@@ -84,3 +53,5 @@ export const userLeave = roomName => emitApi('userLeave', {roomName});
  * @returns {Promise}
  */
 export const emitRate = (rate) => emitApi('userRate', {rate});
+
+export const playAgain = () => emitApi('playAgain', ({}));

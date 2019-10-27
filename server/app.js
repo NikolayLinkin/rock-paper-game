@@ -79,7 +79,11 @@ io.on('connection', socket => {
         socket.room = roomName;
 
         rooms.createRoom(roomName);
-        rooms.addPlayer(roomName, {id: socket.id, name: userName});
+        rooms.addPlayer(roomName, {
+            id: socket.id,
+            name: userName,
+            ready: true,
+        });
     };
 
     const startGame = data => {
@@ -196,6 +200,19 @@ io.on('connection', socket => {
 
         roomUpdate({rate});
         cb({status: "ok"});
+    });
+
+    socket.on('playAgain', (data, cb) => {
+        const room = rooms.getRoom(socket.room);
+
+        room.setReady(socket.id);
+
+        if(room.allPlayersReady()) {
+            io.to(socket.room).emit('checkStatus', {canStart: true});
+        } else {
+            io.to(socket.room).emit('checkStatus', {canStart: false});
+        }
+        cb({});
     });
 
 

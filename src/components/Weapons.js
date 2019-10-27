@@ -30,13 +30,14 @@ class Weapons extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate() {
         const {canStart, applyChoose} = this.props;
         const {time, timerStarted} = this.state;
 
         if (canStart && !timerStarted) {
             this.startTimer();
         }
+
         if (time === 0) {
             this.stopTimer();
 
@@ -44,6 +45,10 @@ class Weapons extends Component {
             const rate = rates[Math.floor(Math.random() * 3)];
             applyChoose(rate);
         }
+    }
+
+    componentWillUnmount() {
+        this.stopTimer();
     }
 
     handleSubmit = (e) => {
@@ -71,22 +76,23 @@ class Weapons extends Component {
     };
 
     resetTimer = () => {
-        this.setState = state => ({
-            timerStarted: true,
+        this.setState(state => ({
+            timerStarted: false,
             time: 30,
-        })
+        }))
     };
 
     stopTimer = () => {
         clearInterval(this.timer);
+        this.setState(state => ({time: 30}))
     };
 
     startNewGame = (e) => {
         e.preventDefault();
         const {startNewGame} = this.props;
         this.setState(state => ({selectedWeapon: ''}));
-        startNewGame();
         this.resetTimer();
+        startNewGame();
     };
 
     chooseWeapon = (name) => {
