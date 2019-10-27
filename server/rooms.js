@@ -6,7 +6,6 @@ class Room {
         this.name = name;
         this.players = {};
         this.playersCount = 0;
-        this.rates = [];
         this.isOpen = true;
     }
 
@@ -47,15 +46,24 @@ class Room {
 
     setRate(playerId, rate) {
         this.players[playerId].rate = rate;
-        this.rates.push(rate);
     }
 
     getRates() {
-        return this.rates;
+        const rates = [];
+        for(let player in this.players) {
+            const rate = this.players[player].rate;
+
+            if(rate) {
+                rates.push(this.players[player].rate);
+            }
+        }
+        return rates;
     }
 
     clearRates() {
-        this.rates = [];
+        for(let player in this.players) {
+            this.players[player].rate = "";
+        }
     }
 }
 
