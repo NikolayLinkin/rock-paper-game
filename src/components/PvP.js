@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 
+import RoomsList from "./RoomsList";
 import PopupCreateRoom from "./popups/PopupCreateRoom";
 import PopupLogin from "./popups/PopupLogin";
 
@@ -16,7 +17,8 @@ class PvP extends Component {
         super(props);
 
         this.state = {
-            openPopupName: false,
+            openPopupName: "",
+            chooseRoom: "",
         };
     }
 
@@ -28,10 +30,6 @@ class PvP extends Component {
 
         connectToServer();
         fetchRooms();
-    }
-
-    componentDidUpdate() {
-
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -58,8 +56,8 @@ class PvP extends Component {
             sessionErrText,
         } = this.props;
 
-        //TODO: додумать логику
-        if(sessionErrText) {
+        //TODO: додумать логику ошибки
+        if (sessionErrText) {
             this.togglePopup('login');
         }
 
@@ -67,6 +65,7 @@ class PvP extends Component {
             joinInRoom(userName, roomName);
         } else {
             this.togglePopup('login');
+            this.setState(state => ({chooseRoom: roomName}));
         }
     };
 
@@ -78,17 +77,22 @@ class PvP extends Component {
             sessionErrText,
         } = this.props;
 
-        const {openPopupName} = this.state;
+
+        const {
+            openPopupName,
+            chooseRoom,
+        } = this.state;
 
         return (
             <div className="wrapper">
-                {roomsList.map(room =>
-                    <div key={room.id} onClick={() => this.joinInRoom(room.name)} className="room-preview">
-                        {room.name}
-                    </div>
-                )}
-                {!roomsList.length ? 'Нет созданных комнат' : JSON.stringify(roomsList)}
-                <button onClick={() => {this.togglePopup('create-room')}}>Создать комнату</button>
+                {!roomsList.length ?
+                    'Нет созданных комнат' :
+                    <RoomsList rooms={roomsList} joinInRoom={this.joinInRoom}/>
+                }
+                <button onClick={() => {this.togglePopup('create-room')}}>
+                    Создать комнату
+                </button>
+
                 {openPopupName === "create-room" ?
                     <PopupCreateRoom joinInRoom={joinInRoom}
                                      closePopup={this.closePopup}
@@ -97,16 +101,10 @@ class PvP extends Component {
                 {openPopupName === "login" ?
                     <PopupLogin joinInRoom={joinInRoom}
                                 login={login}
+                                chooseRoom={chooseRoom}
                                 errorText={sessionErrText}
                                 closePopup={this.closePopup}
                     /> : ''}
-
-
-                {/*{roomsList.map(room =>*/}
-                {/*    <div key={room.id}>*/}
-                {/*        {JSON.stringify(room)}*/}
-                {/*    </div>*/}
-                {/*)}*/}
             </div>
         );
     }

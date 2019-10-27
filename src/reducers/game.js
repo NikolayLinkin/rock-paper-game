@@ -1,13 +1,11 @@
 import * as types from "../constants/ActionsTypes";
 
 const initialState = {
-    gameMode: null,
     finish: false,
     canStart: false,
     result: null,
     enemyRate: null,
     selectedWeapon: null,
-    loading: false,
     message: null,
 };
 
@@ -50,12 +48,6 @@ const game = (state = initialState, action) => {
             return {
                 ...state,
                 message: action.message,
-            }
-        }
-        case types.UPDATE_GAME_HISTORY: {
-            return {
-                ...state,
-                history: [...state.history, action.lastGameResult]
             }
         }
         default: return state;

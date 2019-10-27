@@ -1,13 +1,12 @@
 import React from "react";
-import RoomPreview from "./RoomPreview";
 
-const RoomsList = ({rooms}) => {
+const RoomsList = ({rooms, joinInRoom}) => {
     return (
         <div className="rooms">
             {rooms.map(room =>
-                <RoomPreview key={room.id}
-
-                />
+                <div key={room.id} onClick={() => {joinInRoom(room.name)}}>
+                    {room.name}
+                </div>
             )}
         </div>
     );

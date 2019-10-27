@@ -6,6 +6,7 @@ class PopupLogin extends Component {
     static propTypes = {
         joinInRoom: PropTypes.func.isRequired,
         closePopup: PropTypes.func.isRequired,
+        roomName: PropTypes.string,
     };
 
     constructor(props) {
@@ -20,15 +21,24 @@ class PopupLogin extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         const userName = this.userName.current.value;
-        const {login, closePopup} = this.props;
+        const {
+            joinInRoom,
+            login,
+            closePopup,
+            chooseRoom,
+        } = this.props;
 
         if (!userName.length) {
             this.setState(state => ({error: 'Заполните все поля формы'}));
             return false;
         }
 
-        login(userName);
-        closePopup();
+        if(chooseRoom) {
+            joinInRoom(userName, chooseRoom);
+        } else {
+            login(userName);
+            closePopup();
+        }
 
         this.userName.current.value = '';
     };
