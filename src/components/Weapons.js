@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import WeaponItem from "./WeaponsItem";
-// import classNames from "classnames";
 
 class Weapons extends Component {
     static propTypes = {
@@ -15,11 +14,36 @@ class Weapons extends Component {
     constructor(props) {
         super(props);
 
+        this.timer = null;
+
         this.state = {
             selectedWeapon: '',
+            time: 30,
+            timerStarted: false,
             error: '',
         };
+    }
 
+    componentDidMount() {
+        if (this.props.canStart && !this.state.timerStarted) {
+            this.startTimer();
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {canStart, applyChoose} = this.props;
+        const {time, timerStarted} = this.state;
+
+        if (canStart && !timerStarted) {
+            this.startTimer();
+        }
+        if (time === 0) {
+            this.stopTimer();
+
+            const rates = ['rock', 'paper', 'scissors'];
+            const rate = rates[Math.floor(Math.random() * 3)];
+            applyChoose(rate);
+        }
     }
 
     handleSubmit = (e) => {
@@ -30,11 +54,31 @@ class Weapons extends Component {
         } = this.props;
 
 
-        if(!selectedWeapon) {
+        if (!selectedWeapon) {
             this.setState(state => ({error: 'Нужно выбрать предмет'}));
             return false;
         }
+        this.stopTimer();
         applyChoose(selectedWeapon);
+    };
+
+    startTimer = () => {
+        this.timer = setInterval(() => this.setState({
+            time: this.state.time - 1
+        }), 1000);
+
+        this.setState(state => ({timerStarted: true}));
+    };
+
+    resetTimer = () => {
+        this.setState = state => ({
+            timerStarted: true,
+            time: 30,
+        })
+    };
+
+    stopTimer = () => {
+        clearInterval(this.timer);
     };
 
     startNewGame = (e) => {
@@ -42,20 +86,25 @@ class Weapons extends Component {
         const {startNewGame} = this.props;
         this.setState(state => ({selectedWeapon: ''}));
         startNewGame();
+        this.resetTimer();
     };
 
     chooseWeapon = (name) => {
-        this.setState(state=> ({selectedWeapon: name}));
+        this.setState(state => ({selectedWeapon: name}));
     };
 
     render() {
-        const {error, selectedWeapon} = this.state;
+        const {
+            error,
+            selectedWeapon,
+            time,
+        } = this.state;
         const {gameFinish, canStart} = this.props;
 
         return (
             <form onSubmit={this.handleSubmit}>
                 {error ? <div className="weapons__error">{error}</div> : ''}
-                <div className="weapons" >
+                <div className="weapons">
                     <WeaponItem chooseWeapon={this.chooseWeapon}
                                 selectedWeapon={selectedWeapon}
                                 name={'rock'}/>
@@ -68,7 +117,11 @@ class Weapons extends Component {
                 </div>
 
                 <div style={{margin: '50px'}}>
-                    {!canStart ? 'Ожидание других игроков' : ''}
+                    {!canStart ? 'Ожидание других игроков' :
+                        <div className="timer">
+                            Остаток времени на выбор: {time}
+                        </div>
+                    }
                 </div>
 
                 {gameFinish ?
