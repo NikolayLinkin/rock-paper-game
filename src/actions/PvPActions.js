@@ -4,10 +4,6 @@ import {GET_ROOMS} from "../constants/ApiConstants";
 import {callApi} from "../utils/apiUtils";
 import {FETCH_ROOMS} from "../constants/ActionsTypes";
 
-export const userConnect = (userName) => dispatch => {
-
-};
-
 const gameWinnerSuccess = (gameResult, enemyRate, playerRate) => ({
     type: types.GAME_FINISH,
     gameResult,

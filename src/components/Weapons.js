@@ -31,7 +31,7 @@ class Weapons extends Component {
     }
 
     componentDidUpdate() {
-        const {canStart, applyChoose} = this.props;
+        const {canStart, applyChoose, gameFinish} = this.props;
         const {time, timerStarted} = this.state;
 
         if (canStart && !timerStarted) {

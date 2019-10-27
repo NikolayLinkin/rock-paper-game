@@ -67,6 +67,7 @@ class Room extends Component {
                          gameFinish={gameFinish}
                          startNewGame={startNewGame}
                          canStart={canStart}
+                         playerRate={playerRate}
                 />
 
                 {gameFinish ?
