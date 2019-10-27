@@ -1,2 +1,2 @@
-*npm start*
-*then cd server npm start*
+- npm start
+- then cd server npm start
