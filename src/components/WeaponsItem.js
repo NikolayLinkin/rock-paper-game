@@ -13,7 +13,7 @@ const WeaponItem = ({name, chooseWeapon}) => {
             <input className="weapons__item__inp"
                    onChange={() => chooseWeapon(name)}
                    type="radio" name="weapon" hidden/>
-            <span className="weapons__item__span"/>
+            <span className={`weapons__item__span weapons__item__span--${name}`}/>
             {name}
         </label>
     )

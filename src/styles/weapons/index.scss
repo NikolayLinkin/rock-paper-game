@@ -22,7 +22,21 @@
   border: 2px solid #e6e6e6;
   transition: border-color, .2s;
   box-sizing: border-box;
+  background: no-repeat center;
+  background-size: 80%;
   cursor: pointer;
+
+  &--rock {
+    background-image: url(../../img/ico-rock.svg);
+  }
+
+  &--scissors {
+    background-image: url(../../img/ico-scissors.svg);
+  }
+
+  &--paper {
+    background-image: url(../../img/ico-paper.svg);
+  }
 
   &:hover {
     border-color: #000;

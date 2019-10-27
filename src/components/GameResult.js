@@ -11,32 +11,30 @@ const propTypes = {
 
 const GameResult = ({enemyRate, playerRate, gameResult}) => {
     const resultClass = classNames({
-        "result--win": gameResult === "win",
-        "result--lose": gameResult === "lose",
+        "result__finish": true,
+        "result__finish--win": gameResult === "win",
+        "result__finish--lose": gameResult === "lose",
+        "result__finish--draw": gameResult === "draw",
     });
 
     return (
-        <div className="room__result">
-            <div className="room__result__item">
-                <span>Ваш выбор</span>
-                <div>
-                    {playerRate}
+        <div className="result">
+            <div className="result__items">
+                <div className="result__item">
+                    <span>Ваш выбор:</span>
+                    <div className={`result__item__ico result__item__ico--${playerRate}`}/>
+                </div>
+                <div className="result__item--vs">
+                    VS
+                </div>
+                <div className="result__item">
+                    <span>Выбор противника:</span>
+                    <div className={`result__item__ico result__item__ico--${enemyRate}`}/>
                 </div>
             </div>
-            <div className="room__result__item">
-
-            </div>
-            <div className="room__result__item">
-                <span>Выбор противника</span>
-                <div>
-                    {enemyRate}
-                </div>
-            </div>
-
             <div className={resultClass}>
-                Итог: {gameResult}
+                {gameResult !== "draw" ? "You:" : ""} {gameResult}
             </div>
-
         </div>
     )
 };
