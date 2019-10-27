@@ -49,16 +49,22 @@ class Weapons extends Component {
     };
 
     render() {
-        const {error} = this.state;
+        const {error, selectedWeapon} = this.state;
         const {gameFinish, canStart} = this.props;
 
         return (
             <form onSubmit={this.handleSubmit}>
                 {error ? <div className="weapons__error">{error}</div> : ''}
                 <div className="weapons" >
-                    <WeaponItem chooseWeapon={this.chooseWeapon} name={'rock'}/>
-                    <WeaponItem chooseWeapon={this.chooseWeapon} name={'scissors'}/>
-                    <WeaponItem chooseWeapon={this.chooseWeapon} name={'paper'}/>
+                    <WeaponItem chooseWeapon={this.chooseWeapon}
+                                selectedWeapon={selectedWeapon}
+                                name={'rock'}/>
+                    <WeaponItem chooseWeapon={this.chooseWeapon}
+                                selectedWeapon={selectedWeapon}
+                                name={'scissors'}/>
+                    <WeaponItem chooseWeapon={this.chooseWeapon}
+                                selectedWeapon={selectedWeapon}
+                                name={'paper'}/>
                 </div>
 
                 <div style={{margin: '50px'}}>
