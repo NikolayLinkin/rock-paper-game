@@ -53,11 +53,11 @@ class PvP extends Component {
         const {
             joinInRoom,
             userName,
-            sessionErrText,
+            sessionErrStatus,
         } = this.props;
 
         //TODO: додумать логику ошибки
-        if (sessionErrText) {
+        if (sessionErrStatus === "Error") {
             this.togglePopup('login');
         }
 

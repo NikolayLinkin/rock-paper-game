@@ -20,6 +20,7 @@ server.listen(port, () => {
     console.log(`Server has started on port ${port}`);
 });
 
+//TODO: проверить
 function getWinner(players) {
     const PAPER = "paper";
     const SCISSORS = "scissors";
@@ -52,7 +53,15 @@ function getWinner(players) {
         result.winnerId = firstPlayer.id
     }
 
-    result.winnerId = secondPlayer.id;
+    if(
+        (secondRate === PAPER && firstRate === ROCK) ||
+        (secondRate === SCISSORS && firstRate === PAPER) ||
+        (secondRate === ROCK && firstRate === SCISSORS)
+    ) {
+        result.winnerId = secondPlayer.id;
+    }
+
+
 
     return result;
 }

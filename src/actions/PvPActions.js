@@ -41,11 +41,11 @@ export const connectToServer = () => async (dispatch, getState) => {
             enemyRate = null,
             playerRate = null;
 
-        for(let rate in rates) {
-            if(rates.hasOwnProperty(rate)) {
-                if( rate === socketId) {
+        for (let rate in rates) {
+            if (rates.hasOwnProperty(rate)) {
+                if (rate === socketId) {
                     playerRate = rates[rate];
-                } else{
+                } else {
                     enemyRate = rates[rate];
                 }
             }
@@ -85,6 +85,13 @@ const joinInRoomError = (errText, errStatus) => ({
     errStatus,
 });
 
+const joinInRoomSuccess = (currentRoom, userName, socketId) => ({
+    type: types.ROOM_JOIN_SUCCESS,
+    currentRoom,
+    userName,
+    socketId,
+});
+
 //TODO: подумать как лучше проверять ограничение создания 2х комнат с одиноковым именем,
 // по параметру или по названию события
 /**
@@ -96,9 +103,10 @@ const joinInRoomError = (errText, errStatus) => ({
 export const joinInRoom = (userName, roomName) => async dispatch => {
     try {
         const {socketId} = await socket.userJoin(userName, roomName);
-        dispatch({type: types.ROOM_JOIN, currentRoom: roomName, userName, socketId,});
+        dispatch(joinInRoomSuccess(roomName, userName, socketId));
     } catch (error) {
-        dispatch(joinInRoomError(error));
+        const {errText, errStatus} = error;
+        dispatch(joinInRoomError(errText, errStatus));
     }
 };
 

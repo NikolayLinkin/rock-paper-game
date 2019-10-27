@@ -22,6 +22,7 @@ class PvE extends Component {
                 <Weapons applyChoose={startPvEGame}
                          startNewGame={startNewGame}
                          gameFinish={gameFinish}
+                         canStart={true}
                 />
 
                 {gameFinish ?

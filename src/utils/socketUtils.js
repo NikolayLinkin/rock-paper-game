@@ -13,8 +13,12 @@ const emitApi = (event, data) => {
          }
 
          socket.emit(event, data, (res) => {
-             if(res.error) {
-                 reject(res.error);
+             if(res.status === "Error" || res.error) {
+                 const error = {
+                   errText: res.error,
+                   errStatus: res.status,
+                 };
+                 reject(error);
              }
 
              resolve(res);

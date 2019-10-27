@@ -33,12 +33,14 @@ const session = (state=initialState, action) => {
         }
 
 
-        case types.ROOM_JOIN: {
+        case types.ROOM_JOIN_SUCCESS: {
             return {
                 ...state,
                 currentRoom: action.currentRoom,
                 userName: action.userName,
                 socketId: action.socketId,
+                errText: "",
+                errStatus: "",
             }
         }
 
