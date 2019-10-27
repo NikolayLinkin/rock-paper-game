@@ -1,6 +1,5 @@
 const http = require('http');
 const express = require('express');
-const users = require('./users')();
 const rooms = require('./rooms')();
 
 const app = express();
@@ -20,7 +19,6 @@ server.listen(port, () => {
     console.log(`Server has started on port ${port}`);
 });
 
-//TODO: проверить
 function getWinner(players) {
     const PAPER = "paper";
     const SCISSORS = "scissors";
@@ -65,8 +63,6 @@ function getWinner(players) {
 
     return result;
 }
-
-// const rooms = ['123', 'my room'];
 
 
 io.on('connection', socket => {
