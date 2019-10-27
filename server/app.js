@@ -206,7 +206,7 @@ io.on('connection', socket => {
         if(room.allPlayersReady()) {
             io.to(socket.room).emit('checkStatus', {canStart: true});
         } else {
-            io.to(socket.room).emit('checkStatus', {canStart: false});
+            socket.emit('checkStatus', {canStart: false});
         }
         cb({});
     });

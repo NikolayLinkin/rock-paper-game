@@ -41,7 +41,7 @@ const game = (state = initialState, action) => {
             return {
                 ...state,
                 canStart: false,
-                finish: false,
+                finish: true,
             }
         }
 
