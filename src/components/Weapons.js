@@ -38,8 +38,10 @@ class Weapons extends Component {
         const {canStart, applyChoose} = this.props;
         const {time, timerStarted} = this.state;
 
-        if (canStart && !timerStarted) {
-            this.startTimer();
+        if(prevProps.canStart !== canStart) {
+            if (canStart && !timerStarted) {
+                this.startTimer();
+            }
         }
 
         if (time === 0) {
@@ -87,8 +89,8 @@ class Weapons extends Component {
     };
 
     stopTimer = () => {
+        this.resetTimer();
         clearInterval(this.timer);
-        this.setState(state => ({time: 30}))
     };
 
     startNewGame = (e) => {
@@ -100,7 +102,7 @@ class Weapons extends Component {
     };
 
     chooseWeapon = (name) => {
-        this.setState(state => ({selectedWeapon: name}));
+        this.setState(state => ({selectedWeapon: name, error: ""}));
     };
 
     render() {

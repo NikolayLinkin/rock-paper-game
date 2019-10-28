@@ -22,6 +22,7 @@ export const startNewPveGame =() => dispatch => {
 };
 
 export const startNewGame = () => async dispatch => {
+    dispatch({type: types.GAME_RESET});
     await playAgain();
     dispatch({type: types.GAME_START});
 };
