@@ -10,10 +10,15 @@ const gameFinish = (gameResult, enemyRate, playerRate) => ({
     playerRate,
 });
 
-export const startPvEGame = (playerRate) => dispatch => {
+export const playPvEGame = (playerRate) => dispatch => {
     const {gameResult, aiRate} = playWithAi(playerRate);
 
     dispatch(gameFinish(gameResult, aiRate, playerRate));
+};
+
+export const startNewPveGame =() => dispatch => {
+    dispatch({type: types.GAME_RESET});
+    dispatch({type: types.GAME_START});
 };
 
 export const startNewGame = () => async dispatch => {

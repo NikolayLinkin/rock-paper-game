@@ -21,6 +21,7 @@ export const connectToServer = () => async (dispatch, getState) => {
             dispatch({type: types.GAME_CAN_START});
         } else {
             dispatch({type: types.GAME_CANT_START});
+            dispatch({type: types.GAME_RESET});
         }
     });
 

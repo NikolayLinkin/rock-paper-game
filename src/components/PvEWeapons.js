@@ -3,16 +3,11 @@ import PropTypes from "prop-types";
 
 import WeaponItem from "./WeaponsItem";
 
-class Weapons extends Component {
+class PvEWeapons extends Component {
     static propTypes = {
         applyChoose: PropTypes.func.isRequired,
         startNewGame: PropTypes.func.isRequired,
         gameFinish: PropTypes.bool.isRequired,
-        canStart: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        canStart: true,
     };
 
     constructor(props) {
@@ -22,37 +17,8 @@ class Weapons extends Component {
 
         this.state = {
             selectedWeapon: '',
-            time: 30,
-            timerStarted: false,
             error: '',
         };
-    }
-
-    componentDidMount() {
-        if (this.props.canStart && !this.state.timerStarted) {
-            this.startTimer();
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        const {canStart, applyChoose} = this.props;
-        const {time, timerStarted} = this.state;
-
-        if (canStart && !timerStarted) {
-            this.startTimer();
-        }
-
-        if (time === 0) {
-            this.stopTimer();
-
-            const rates = ['rock', 'paper', 'scissors'];
-            const rate = rates[Math.floor(Math.random() * 3)];
-            applyChoose(rate);
-        }
-    }
-
-    componentWillUnmount() {
-        this.stopTimer();
     }
 
     handleSubmit = (e) => {
@@ -67,35 +33,13 @@ class Weapons extends Component {
             this.setState(state => ({error: 'Нужно выбрать предмет'}));
             return false;
         }
-        this.stopTimer();
         applyChoose(selectedWeapon);
-    };
-
-    startTimer = () => {
-        this.timer = setInterval(() => this.setState({
-            time: this.state.time - 1
-        }), 1000);
-
-        this.setState(state => ({timerStarted: true}));
-    };
-
-    resetTimer = () => {
-        this.setState(state => ({
-            timerStarted: false,
-            time: 30,
-        }))
-    };
-
-    stopTimer = () => {
-        clearInterval(this.timer);
-        this.setState(state => ({time: 30}))
     };
 
     startNewGame = (e) => {
         e.preventDefault();
         const {startNewGame} = this.props;
         this.setState(state => ({selectedWeapon: ''}));
-        this.resetTimer();
         startNewGame();
     };
 
@@ -107,9 +51,8 @@ class Weapons extends Component {
         const {
             error,
             selectedWeapon,
-            time,
         } = this.state;
-        const {gameFinish, canStart} = this.props;
+        const {gameFinish} = this.props;
 
         return (
             <form onSubmit={this.handleSubmit}>
@@ -126,20 +69,12 @@ class Weapons extends Component {
                                 name={'paper'}/>
                 </div>
 
-                <div style={{margin: '50px'}}>
-                    {!canStart ? 'Ожидание других игроков' :
-                        <div className="timer">
-                            Остаток времени на выбор: {time}
-                        </div>
-                    }
-                </div>
-
-                {gameFinish && canStart ?
+                {gameFinish ?
                     <button onClick={this.startNewGame} className="weapons__btn">
                         Начать новую игру
                     </button>
                     :
-                    <button type="submit" className="weapons__btn" disabled={!canStart}>
+                    <button type="submit" className="weapons__btn">
                         Подтвердить выбор
                     </button>
                 }
@@ -148,4 +83,4 @@ class Weapons extends Component {
     }
 }
 
-export default Weapons;
+export default PvEWeapons;

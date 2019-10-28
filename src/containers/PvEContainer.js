@@ -4,8 +4,8 @@ import {connect} from "react-redux";
 import PvE from "../components/PvE";
 
 import {
-    startPvEGame,
-    startNewGame,
+    playPvEGame,
+    startNewPveGame,
 } from "../actions/GameActions";
 
 import {
@@ -27,6 +27,6 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-    startPvEGame,
-    startNewGame,
+    playPvEGame,
+    startNewPveGame,
 })(PvEContainer);

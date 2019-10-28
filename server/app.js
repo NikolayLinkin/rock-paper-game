@@ -127,6 +127,7 @@ io.on('connection', socket => {
 
         if (room) {
             room.removePlayer(socket.id);
+            room.clearRates();
             room.isOpen = true;
 
             if (room.getPlayersCount() === 0) {

@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 
-import Weapons from "../components/Weapons";
+import PvEWeapons from "../components/PvEWeapons";
 import GameResult from "./GameResult";
 
 class PvE extends Component {
     render() {
         const {
-            startPvEGame,
-            startNewGame,
+            playPvEGame,
+            startNewPveGame,
             enemyRate,
             playerRate,
             gameResult,
@@ -19,10 +19,9 @@ class PvE extends Component {
                 <h2 className="title">
                     Для начала игры, нужно выбрать позицию:
                 </h2>
-                <Weapons applyChoose={startPvEGame}
-                         startNewGame={startNewGame}
+                <PvEWeapons applyChoose={playPvEGame}
+                         startNewGame={startNewPveGame}
                          gameFinish={gameFinish}
-                         canStart={true}
                 />
 
                 {gameFinish ?

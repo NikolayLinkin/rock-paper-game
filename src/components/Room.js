@@ -70,7 +70,7 @@ class Room extends Component {
                          playerRate={playerRate}
                 />
 
-                {gameFinish ?
+                {gameFinish && canStart ?
                     <GameResult enemyRate={enemyRate}
                                 playerRate={playerRate}
                                 gameResult={gameResult}
