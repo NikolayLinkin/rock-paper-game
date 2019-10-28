@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/rock-paper-game/static/css/main.de93a109.chunk.css",
+    "main.js": "/rock-paper-game/static/js/main.fca2a6ed.chunk.js",
+    "main.js.map": "/rock-paper-game/static/js/main.fca2a6ed.chunk.js.map",
+    "runtime-main.js": "/rock-paper-game/static/js/runtime-main.9e37a4cb.js",
+    "runtime-main.js.map": "/rock-paper-game/static/js/runtime-main.9e37a4cb.js.map",
+    "static/css/2.764ccc25.chunk.css": "/rock-paper-game/static/css/2.764ccc25.chunk.css",
+    "static/js/2.921b595e.chunk.js": "/rock-paper-game/static/js/2.921b595e.chunk.js",
+    "static/js/2.921b595e.chunk.js.map": "/rock-paper-game/static/js/2.921b595e.chunk.js.map",
+    "index.html": "/rock-paper-game/index.html",
+    "precache-manifest.d7e28b1aa2365a35e0d759b461d45a6e.js": "/rock-paper-game/precache-manifest.d7e28b1aa2365a35e0d759b461d45a6e.js",
+    "service-worker.js": "/rock-paper-game/service-worker.js",
+    "static/css/2.764ccc25.chunk.css.map": "/rock-paper-game/static/css/2.764ccc25.chunk.css.map",
+    "static/css/main.de93a109.chunk.css.map": "/rock-paper-game/static/css/main.de93a109.chunk.css.map",
+    "static/media/styles.scss": "/rock-paper-game/static/media/ico-scissors.d24e4bd5.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9e37a4cb.js",
+    "static/css/2.764ccc25.chunk.css",
+    "static/js/2.921b595e.chunk.js",
+    "static/css/main.de93a109.chunk.css",
+    "static/js/main.fca2a6ed.chunk.js"
+  ]
+}
