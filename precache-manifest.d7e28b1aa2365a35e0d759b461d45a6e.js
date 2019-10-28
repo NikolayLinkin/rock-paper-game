@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "81ad6ec614b51b0fbf274bdb004922e0",
+    "revision": "bbc33495c07aa64113f38565cb3fed99",
     "url": "/rock-paper-game/index.html"
   },
   {
-    "revision": "63255015b69626e5cbbe",
+    "revision": "e3a725a44ce408971c15",
     "url": "/rock-paper-game/static/css/2.764ccc25.chunk.css"
   },
   {
-    "revision": "65fd9da9fcbd1a2186ec",
+    "revision": "7915ca71f23165e230bf",
     "url": "/rock-paper-game/static/css/main.de93a109.chunk.css"
   },
   {
-    "revision": "63255015b69626e5cbbe",
-    "url": "/rock-paper-game/static/js/2.a88dac61.chunk.js"
+    "revision": "e3a725a44ce408971c15",
+    "url": "/rock-paper-game/static/js/2.921b595e.chunk.js"
   },
   {
-    "revision": "65fd9da9fcbd1a2186ec",
-    "url": "/rock-paper-game/static/js/main.3c5137aa.chunk.js"
+    "revision": "7915ca71f23165e230bf",
+    "url": "/rock-paper-game/static/js/main.fca2a6ed.chunk.js"
   },
   {
     "revision": "a6d2ca8680113057b765",

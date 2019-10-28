@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/rock-paper-game/static/css/main.de93a109.chunk.css",
-    "main.js": "/rock-paper-game/static/js/main.3c5137aa.chunk.js",
-    "main.js.map": "/rock-paper-game/static/js/main.3c5137aa.chunk.js.map",
+    "main.js": "/rock-paper-game/static/js/main.fca2a6ed.chunk.js",
+    "main.js.map": "/rock-paper-game/static/js/main.fca2a6ed.chunk.js.map",
     "runtime-main.js": "/rock-paper-game/static/js/runtime-main.9e37a4cb.js",
     "runtime-main.js.map": "/rock-paper-game/static/js/runtime-main.9e37a4cb.js.map",
     "static/css/2.764ccc25.chunk.css": "/rock-paper-game/static/css/2.764ccc25.chunk.css",
-    "static/js/2.a88dac61.chunk.js": "/rock-paper-game/static/js/2.a88dac61.chunk.js",
-    "static/js/2.a88dac61.chunk.js.map": "/rock-paper-game/static/js/2.a88dac61.chunk.js.map",
+    "static/js/2.921b595e.chunk.js": "/rock-paper-game/static/js/2.921b595e.chunk.js",
+    "static/js/2.921b595e.chunk.js.map": "/rock-paper-game/static/js/2.921b595e.chunk.js.map",
     "index.html": "/rock-paper-game/index.html",
-    "precache-manifest.52982b28699eb6988180c049c46e0553.js": "/rock-paper-game/precache-manifest.52982b28699eb6988180c049c46e0553.js",
+    "precache-manifest.d7e28b1aa2365a35e0d759b461d45a6e.js": "/rock-paper-game/precache-manifest.d7e28b1aa2365a35e0d759b461d45a6e.js",
     "service-worker.js": "/rock-paper-game/service-worker.js",
     "static/css/2.764ccc25.chunk.css.map": "/rock-paper-game/static/css/2.764ccc25.chunk.css.map",
     "static/css/main.de93a109.chunk.css.map": "/rock-paper-game/static/css/main.de93a109.chunk.css.map",
@@ -18,8 +18,8 @@
   "entrypoints": [
     "static/js/runtime-main.9e37a4cb.js",
     "static/css/2.764ccc25.chunk.css",
-    "static/js/2.a88dac61.chunk.js",
+    "static/js/2.921b595e.chunk.js",
     "static/css/main.de93a109.chunk.css",
-    "static/js/main.3c5137aa.chunk.js"
+    "static/js/main.fca2a6ed.chunk.js"
   ]
 }

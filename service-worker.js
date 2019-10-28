@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/rock-paper-game/precache-manifest.52982b28699eb6988180c049c46e0553.js"
+  "/rock-paper-game/precache-manifest.d7e28b1aa2365a35e0d759b461d45a6e.js"
 );
 
 self.addEventListener('message', (event) => {
