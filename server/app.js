@@ -134,6 +134,8 @@ io.on('connection', socket => {
                 rooms.removeRoom(roomName);
             }
         }
+
+        socket.room = null;
     };
 
 
